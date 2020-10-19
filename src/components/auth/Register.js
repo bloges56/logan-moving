@@ -1,7 +1,8 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { Row, Button, Form, FormGroup, Label, Input } from "reactstrap"
+import { Row, Button, Form, FormGroup, Label, Input, Modal, ModalBody, ModalFooter } from "reactstrap"
 
+//register for component
 export const Register = props => {
 
     //setup references
@@ -15,24 +16,38 @@ export const Register = props => {
             .then(user => !!user.length)
     }
 
+    //get history
     const history = useHistory()
 
+
+    //set up modal for when username is already taken
+    const [ modal, setModal ] = useState(false)
+    
+
+    const toggle = () => setModal(!modal)
+    
+
+    const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={toggle}>&times;</button>;
+
+    //on submit event, if the username is not already in the databse, then create a new user
+    //otherwise, deisplay the modal
     const handleRegister = (e) => {
 
         e.preventDefault()
 
         existingUserCheck()
-                .then(() => {
-                    fetch("http://localhost:8088/users", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            username: username.current.value,
-                            email: email.current.value,
+                .then(check => {
+                    if(!check){
+                        fetch("http://localhost:8088/users", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                username: username.current.value,
+                                email: email.current.value,
+                            })
                         })
-                    })
                         .then(_ => _.json())
                         .then(createdUser => {
                             if (createdUser.hasOwnProperty("id")) {
@@ -40,9 +55,14 @@ export const Register = props => {
                                 history.push("/")
                             }
                         })
+                    }
+                    else{
+                        toggle()
+                    }
                 })
     }
 
+    //return the html for the form and modal
     return (
         <Form onSubmit={handleRegister}>
             <Row form>
@@ -62,6 +82,14 @@ export const Register = props => {
                     <Button type="submit">Submit</Button>
                 </FormGroup>
             </Row>
+            <Modal isOpen={modal} toggle={toggle} className="username-modal" external={externalCloseBtn}>
+                <ModalBody>
+                    That username is already taken
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={toggle}>Close</Button>
+                </ModalFooter>
+            </Modal>
         </Form>
     )
 }
