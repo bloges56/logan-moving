@@ -64,32 +64,35 @@ export const Register = props => {
 
     //return the html for the form and modal
     return (
-        <Form onSubmit={handleRegister}>
-            <Row form>
-                <FormGroup>
-                    <Label for="username-input">Username</Label>
-                    <Input type="username" required placeholder="Username" id="username-input" innerRef={username}></Input>
-                </FormGroup>
-            </Row>
-            <Row form>
-                <FormGroup>
-                    <Label for="email-input">Email</Label>
-                    <Input required type="email" placeholder="email@example.com" id="email-input" innerRef={email}></Input>
-                </FormGroup>
-            </Row>
-            <Row>
-                <FormGroup>
-                    <Button type="submit">Submit</Button>
-                </FormGroup>
-            </Row>
-            <Modal isOpen={modal} toggle={toggle} className="username-modal" external={externalCloseBtn}>
-                <ModalBody>
-                    That username is already taken
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger" onClick={toggle}>Close</Button>
-                </ModalFooter>
-            </Modal>
-        </Form>
+        <>
+            <h1>Register</h1>
+            <Form onSubmit={handleRegister}>
+                <Row form>
+                    <FormGroup>
+                        <Label for="username-input">Username</Label>
+                        <Input type="username" required placeholder="Username" id="username-input" innerRef={username}></Input>
+                    </FormGroup>
+                </Row>
+                <Row form>
+                    <FormGroup>
+                        <Label for="email-input">Email</Label>
+                        <Input required type="email" placeholder="email@example.com" id="email-input" innerRef={email}></Input>
+                    </FormGroup>
+                </Row>
+                <Row>
+                    <FormGroup>
+                        <Button type="submit">Submit</Button>
+                    </FormGroup>
+                </Row>
+                <Modal isOpen={modal} toggle={toggle} className="username-modal" external={externalCloseBtn}>
+                    <ModalBody>
+                        That username is already taken
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="danger" onClick={toggle}>Close</Button>
+                    </ModalFooter>
+                </Modal>
+            </Form>
+        </>
     )
 }

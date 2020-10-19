@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react"
 import { Row, Button, Form, FormGroup, Label, Input, Modal, ModalBody, ModalFooter} from "reactstrap"
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 
 
 export const Login = props => {
@@ -50,41 +50,47 @@ export const Login = props => {
     
     //return html form
     return (
-        <Form onSubmit={handleLogin}>
-            <Row form>
+        <>
+            <h1>Login</h1>
+            <Form onSubmit={handleLogin}>
+                <Row form>
+                    <FormGroup>
+                        <Label for="username-input">Username</Label>
+                        <Input placeholder="Username" id="username-input" innerRef={username}></Input>
+                    </FormGroup>
+                </Row>
+                <Row form>
+                    <FormGroup>
+                        <Label for="email-input">Email</Label>
+                        <Input type="email" placeholder="email@example.com" id="email-input" innerRef={email}></Input>
+                    </FormGroup>
+                </Row>
+                <Row>
                 <FormGroup>
-                    <Label for="username-input">Username</Label>
-                    <Input placeholder="Username" id="username-input" innerRef={username}></Input>
+                        <Button type="submit">Submit</Button>
                 </FormGroup>
-            </Row>
-            <Row form>
-                <FormGroup>
-                    <Label for="email-input">Email</Label>
-                    <Input type="email" placeholder="email@example.com" id="email-input" innerRef={email}></Input>
-                </FormGroup>
-            </Row>
-            <Row>
-            <FormGroup>
-                    <Button type="submit">Submit</Button>
-            </FormGroup>
-            </Row>
-            <Modal isOpen={usernameModal} toggle={toggleUsernameModal} className="username-modal" external={externalCloseBtnUser}>
-                <ModalBody>
-                    The username does not match any current users
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger" onClick={toggleUsernameModal}>Close</Button>
-                </ModalFooter>
-            </Modal>
-            <Modal isOpen={emailModal} toggle={toggleEmailModal} className="username-modal" external={externalCloseBtnEmail}>
-                <ModalBody>
-                    The email does not match the username
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger" onClick={toggleEmailModal}>Close</Button>
-                </ModalFooter>
-            </Modal>
-        </Form>
+                </Row>
+                <Modal isOpen={usernameModal} toggle={toggleUsernameModal} className="username-modal" external={externalCloseBtnUser}>
+                    <ModalBody>
+                        The username does not match any current users
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="danger" onClick={toggleUsernameModal}>Close</Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal isOpen={emailModal} toggle={toggleEmailModal} className="username-modal" external={externalCloseBtnEmail}>
+                    <ModalBody>
+                        The email does not match the username
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="danger" onClick={toggleEmailModal}>Close</Button>
+                    </ModalFooter>
+                </Modal>
+            </Form>
+            <div>
+                <Link to="/register">Register</Link>
+            </div>
+        </>
     )
 
 }
