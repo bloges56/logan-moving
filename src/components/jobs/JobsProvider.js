@@ -14,11 +14,21 @@ export const JobsProvider = props => {
         .then(setJobs)
     }
 
-    //return the functions through JobsContext
+    //add a job to the database
+    const addJob = job => {
+        return fetch("http://localhost:8088/jobs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(job)
+        })
+    }
 
+    //return the functions through JobsContext
     return (
         <JobsContext.Provider value = {{
-            jobs, getJobs
+            jobs, getJobs, addJob
         }}>
             {props.children}
         </JobsContext.Provider>

@@ -17,8 +17,8 @@ export const JobsCalendar = () => {
                 onChange={onChange}
                 value={date}
             /> 
-            <JobsDayList date={date}/>
-            <Link to={`/jobs/form/${date}`}>Add Job</Link>
+            <JobsDayList date={date?.getTime()}/>
+            <Link to={`/jobs/form?date=${date?.getTime()}`}>Add Job</Link>
         </>
     )
 }
