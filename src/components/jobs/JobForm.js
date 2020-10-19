@@ -1,11 +1,14 @@
 import React, {useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
+import { ClientsContext } from "../clients/ClientsProvider"
 import { useHistory, useParams, useLocation } from "react-router-dom"
 import { Button, Form, FormGroup, Label, Input } from "reactstrap"
 
 export const JobForm = () => {
     //get the addJob function from JobsContext
     const { addJob } = useContext(JobsContext)
+
+    const { clients, getClients } = useLocation(ClientsContext)
 
     //create state for the current job
     const [ job, setJob ] = useState({
@@ -33,7 +36,10 @@ export const JobForm = () => {
 
     //set isloading to false
     useEffect(() => {
-        setIsLoading(false)
+        getClients()
+        .then(() => {
+            setIsLoading(false)
+        })
     }, [])
 
     //if jobId is in the URL, then get the job
@@ -69,7 +75,7 @@ export const JobForm = () => {
             <Form>
                 <FormGroup>
                     <Label for="job-title">Title: </Label>
-                    <Input className="form-control" type="text" name="title" id="job-title" onChange={handleControlledInputChange} value={job.title}/>
+                    <Input className="form-control" type="text" name="title" id="job-title" onChange={handleControlledInputChange} value={job.title} required/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-date">Date: </Label>
