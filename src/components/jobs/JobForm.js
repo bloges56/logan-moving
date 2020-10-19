@@ -55,14 +55,12 @@ export const JobForm = () => {
     
     //add the job to the database
     const constructJobObject = () => {
-        if(date){
-            addJob({
-                title: job.title,
-                clientId: 0,
-                date: parseInt(date)
-            })
-            .then(() => history.push("/jobs"))
-        }  
+        addJob({
+            title: job.title,
+            clientId: 0,
+            date: parseInt(date)
+        })
+        .then(() => history.push("/jobs"))
     }
     
 

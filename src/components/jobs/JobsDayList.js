@@ -1,7 +1,8 @@
 import React, {useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
 import { ListGroup, ListGroupItem } from "reactstrap"
-
+import { Link } from "react-router-dom"
+ 
 //component that lists out all the jobs of a given date
 export const JobsDayList = ({date}) => {
     //grab jobs and getJobs from JobsContext
@@ -13,6 +14,7 @@ export const JobsDayList = ({date}) => {
     }, [date])
 
     return (
+        <>
         <ListGroup>
             {
                 jobs.map(job => {
@@ -20,5 +22,7 @@ export const JobsDayList = ({date}) => {
                 })
             }
         </ListGroup>
+        <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
+        </>
     )
 }
