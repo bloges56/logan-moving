@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Calendar } from "react-calendar"
 import { JobsDayList } from "./JobsDayList"
+import { Link } from "react-router-dom"
 
 
 export const JobsCalendar = () => {
@@ -17,6 +18,7 @@ export const JobsCalendar = () => {
                 value={date}
             /> 
             <JobsDayList date={date}/>
+            <Link to={`/jobs/form/${date}`}>Add Job</Link>
         </>
     )
 }
