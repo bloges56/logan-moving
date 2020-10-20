@@ -30,7 +30,7 @@ export const JobsDayList = ({date}) => {
                 })
             }
             {selectedJobId !== 0 && 
-            <JobDetail jobId={selectedJobId}/>
+                <JobDetail jobId={selectedJobId}/>
             }
         </Row>
         }
