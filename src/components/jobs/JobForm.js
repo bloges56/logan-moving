@@ -8,7 +8,7 @@ export const JobForm = () => {
     //get the addJob function from JobsContext
     const { addJob } = useContext(JobsContext)
 
-    const { clients, getClients } = useLocation(ClientsContext)
+    const { clients, getClients } = useContext(ClientsContext)
 
     //create state for the current job
     const [ job, setJob ] = useState({
@@ -63,7 +63,7 @@ export const JobForm = () => {
     const constructJobObject = () => {
         addJob({
             title: job.title,
-            clientId: 0,
+            clientId: parseInt(job.clientId),
             date: parseInt(date)
         })
         .then(() => history.push("/jobs"))
@@ -80,6 +80,17 @@ export const JobForm = () => {
                 <FormGroup>
                     <Label for="job-date">Date: </Label>
                     <Input type="date" name="date" id="job-date" value={formatDate(parseInt(date))} disabled={true}/>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="job-client">Select Client</Label>
+                    <Input type="select" name="clientId" id="job-client" onChange={handleControlledInputChange} value={job.clientId}>
+                        <option value="0">Select a client</option>
+                        {clients.map(client => (
+                            <option key={client.id} value={client.id}>
+                                {client.firstName + " " + client.lastName}
+                            </option>
+                        ))}
+                    </Input>
                 </FormGroup>
                 <FormGroup>
                     <Button 
