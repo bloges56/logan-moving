@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
-import { ListGroup, ListGroupItem } from "reactstrap"
+import { Container, Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
  
 //component that lists out all the jobs of a given date
@@ -13,16 +13,25 @@ export const JobsDayList = ({date}) => {
         getJobs(date)
     }, [date])
 
-    return (
-        <>
-        <ListGroup>
-            {
-                jobs.map(job => {
-                return <ListGroupItem key={job.id}>{job.title}</ListGroupItem>
-                })
-            }
-        </ListGroup>
-        <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
-        </>
-    )
+    if(jobs.length != 0){
+        return (
+            <>
+            <Container style={{height:"300px", overflow:"hidden", overflowY:"scroll", width:"50%", margin:"0"}}>
+                {
+                    jobs.map(job => {
+                    return <Row key={job.id}>
+                        <Col xs="6">{job.title}</Col>
+                    </Row>
+                    })
+                }
+                </Container>
+            <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
+            </>
+        )
+    }
+    else{
+        return (
+            <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
+        )
+    }
 }

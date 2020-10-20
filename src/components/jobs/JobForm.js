@@ -152,7 +152,7 @@ export const JobForm = () => {
                     <Label for="job-move-in-zip">Move-In Location Zip</Label>
                     <Input type="text" name="zip" id="job-move-in-zip" onChange={handleControlledInputChangeMoveIn} value={moveIn.zip} required></Input>
                     <Label for="job-move-in-desc">Move-In Location Description</Label>
-                    <Input type="text" name="description" id="job-move-in-desc" onChange={handleControlledInputChangeMoveIn} value={moveIn.description} required></Input>
+                    <Input type="textarea" name="description" id="job-move-in-desc" onChange={handleControlledInputChangeMoveIn} value={moveIn.description} required></Input>
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-move-out-street">Move-Out Location Street</Label>
@@ -162,7 +162,7 @@ export const JobForm = () => {
                     <Label for="job-move-out-zip">Move-Out Location Zip</Label>
                     <Input type="text" name="zip" id="job-move-out-zip" onChange={handleControlledInputChangeMoveOut} value={moveOut.zip} required></Input>
                     <Label for="job-move-out-desc">Move-Out Location Description</Label>
-                    <Input type="text" name="description" id="job-move-out-desc" onChange={handleControlledInputChangeMoveOut} value={moveOut.description} required></Input>
+                    <Input type="textarea" name="description" id="job-move-out-desc" onChange={handleControlledInputChangeMoveOut} value={moveOut.description} required></Input>
                 </FormGroup>
                 <FormGroup>
                     <Button 

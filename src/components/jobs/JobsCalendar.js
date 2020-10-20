@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Calendar } from "react-calendar"
 import { JobsDayList } from "./JobsDayList"
-import { Link } from "react-router-dom"
+import { Container, Row, Col } from 'reactstrap'
 
 //the main jobs calendar and jobs list component
 export const JobsCalendar = () => {
@@ -19,11 +19,13 @@ export const JobsCalendar = () => {
 
     return (
         <>
+        
             <Calendar 
                 onChange={onChange}
                 value={date}
-            /> 
+            />
             <JobsDayList date={date?.getTime()}/>
+            
         </>
     )
 }
