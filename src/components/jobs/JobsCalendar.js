@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Calendar } from "react-calendar"
 import { JobsDayList } from "./JobsDayList"
+import { JobDetail } from "./JobDetail"
 import { Container, Row, Col } from 'reactstrap'
 
 //the main jobs calendar and jobs list component
@@ -19,12 +20,22 @@ export const JobsCalendar = () => {
 
     return (
         <>
-        
-            <Calendar 
-                onChange={onChange}
-                value={date}
-            />
-            <JobsDayList date={date?.getTime()}/>
+            <Container style={{height:"100%"}}>
+                <Row>
+                    <Col>
+                        <Calendar 
+                        onChange={onChange}
+                        value={date}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <JobsDayList date={date?.getTime()}/>
+                    </Col>
+                </Row>
+            </Container>
+            
             
         </>
     )

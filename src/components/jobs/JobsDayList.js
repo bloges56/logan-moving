@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
-import { Container, Row, Col } from "reactstrap"
+import { JobDetail } from "./JobDetail"
+import { Row, Col, Button } from "reactstrap"
 import { Link } from "react-router-dom"
  
 //component that lists out all the jobs of a given date
@@ -8,30 +9,32 @@ export const JobsDayList = ({date}) => {
     //grab jobs and getJobs from JobsContext
     const { jobs, getJobs } = useContext(JobsContext)
 
-    //get jobs on render
+    const [selectedJobId, setSelectedJobId ] = useState(0)
+
+    //get jobs on render and when the date is selected
     useEffect(() => {
         getJobs(date)
     }, [date])
 
-    if(jobs.length != 0){
-        return (
-            <>
-            <Container style={{height:"300px", overflow:"hidden", overflowY:"scroll", width:"50%", margin:"0"}}>
-                {
-                    jobs.map(job => {
-                    return <Row key={job.id}>
-                        <Col xs="6">{job.title}</Col>
-                    </Row>
-                    })
-                }
-                </Container>
-            <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
-            </>
-        )
-    }
-    else{
-        return (
-            <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
-        )
-    }
+    
+    return (
+        <>
+        {jobs.length !== 0 &&
+        <Row style={{height:"300px", overflow:"hidden", overflowY:"scroll", width:"50%", margin:"0"}}>
+            {
+                jobs.map(job => {
+                return <Col key={job.id} xs="6"><Button onClick={e =>{
+                    e.preventDefault()
+                    setSelectedJobId(job.id)
+                }}>{job.title}</Button></Col>
+                })
+            }
+            {selectedJobId !== 0 && 
+            <JobDetail jobId={selectedJobId}/>
+            }
+        </Row>
+        }
+        <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
+        </>
+    )
 }

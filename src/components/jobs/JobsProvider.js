@@ -25,10 +25,16 @@ export const JobsProvider = props => {
         })
     }
 
+    const getJobById = id => {
+        debugger;
+        return fetch(`http://localhost:8088/jobs/${id}?_embed=locations`)
+        .then(res => res.json())
+    }
+
     //return the functions through JobsContext
     return (
         <JobsContext.Provider value = {{
-            jobs, getJobs, addJob
+            jobs, getJobs, addJob, getJobById
         }}>
             {props.children}
         </JobsContext.Provider>
