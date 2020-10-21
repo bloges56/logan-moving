@@ -26,7 +26,6 @@ export const JobsProvider = props => {
     }
 
     const getJobById = id => {
-        debugger;
         return fetch(`http://localhost:8088/jobs/${id}?_embed=locations&_expand=client`)
         .then(res => res.json())
     }

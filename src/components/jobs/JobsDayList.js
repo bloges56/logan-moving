@@ -20,21 +20,22 @@ export const JobsDayList = ({date}) => {
     return (
         <>
         {jobs.length !== 0 &&
-        <Row style={{height:"300px", overflow:"hidden", overflowY:"scroll", width:"50%", margin:"0"}}>
+        <Col xs="6">
             {
                 jobs.map(job => {
-                return <Col key={job.id} xs="6"><Button onClick={e =>{
+                return <Button key={job.id} onClick={e =>{
                     e.preventDefault()
                     setSelectedJobId(job.id)
-                }}>{job.title}</Button></Col>
+                }}>{job.title}</Button>
                 })
             }
+        </Col>
+        }
+        <Col xs="6">
             {selectedJobId !== 0 && 
                 <JobDetail jobId={selectedJobId}/>
             }
-        </Row>
-        }
-        <Link to={`/jobs/form?date=${date}`}>Add Job</Link>
+        </Col>
         </>
     )
 }
