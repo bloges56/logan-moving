@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
+import { EmployeeJobsContext } from "../employeeJobs/EmployeeJobsProvider"
 import { Container, Row, Col, Button } from "reactstrap"
 
 export const JobDetail = ({jobId, setJobId}) => {
@@ -19,18 +20,28 @@ export const JobDetail = ({jobId, setJobId}) => {
         return [year, month, day].join('-');
     }
 
+    //get the needed functions from the conextes
     const { getJobById, removeJob } = useContext(JobsContext)
+    const { getEmployeeJobsByJobId } = useContext(EmployeeJobsContext)
 
-    const[ job, setJob ] = useState(null)
+    //set state for job and employees
+    const [ job, setJob ] = useState(null)
+    const [ employees, setEmployees] = useState([])
 
     useEffect(() => {
         getJobById(jobId)
         .then((response) => {
             setJob(response)
         })
+        .then(() => {
+            return getEmployeeJobsByJobId(jobId)
+        })
+        .then(response => {
+            setEmployees(response)
+        })
     }, [])
 
-
+    debugger;
     return(
         <Container>
             <Row>
