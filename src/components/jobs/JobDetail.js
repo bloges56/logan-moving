@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
-import { Container, Row, Col } from "reactstrap"
+import { Container, Row, Col, Button } from "reactstrap"
 
-export const JobDetail = ({jobId}) => {
+export const JobDetail = ({jobId, setJobId}) => {
 
      //format the given date
      function formatDate(date) {
@@ -19,7 +19,7 @@ export const JobDetail = ({jobId}) => {
         return [year, month, day].join('-');
     }
 
-    const { getJobById } = useContext(JobsContext)
+    const { getJobById, removeJob } = useContext(JobsContext)
 
     const[ job, setJob ] = useState(null)
 
@@ -94,6 +94,18 @@ export const JobDetail = ({jobId}) => {
                 </Col>
                 <Col>
                     <h4>{job?.locations[1].zip}</h4>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Button color="danger" onClick={() => {
+                        removeJob(jobId)
+                        .then(() => {
+                            setJobId(0)
+                        })
+                    }}>
+                        Remove job
+                    </Button>
                 </Col>
             </Row>
         </Container>

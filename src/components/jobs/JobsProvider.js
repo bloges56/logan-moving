@@ -25,15 +25,23 @@ export const JobsProvider = props => {
         })
     }
 
+    //get a job by its id
     const getJobById = id => {
         return fetch(`http://localhost:8088/jobs/${id}?_embed=locations&_expand=client`)
         .then(res => res.json())
     }
 
+    const removeJob = id => {
+        return fetch(`http://localhost:8088/jobs/${id}`, {
+            method: "DELETE"
+        })
+            .then(getJobs)
+    }
+
     //return the functions through JobsContext
     return (
         <JobsContext.Provider value = {{
-            jobs, getJobs, addJob, getJobById
+            jobs, getJobs, addJob, getJobById, removeJob
         }}>
             {props.children}
         </JobsContext.Provider>

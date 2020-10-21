@@ -33,7 +33,7 @@ export const JobsDayList = ({date}) => {
         }
         <Col xs="6">
             {selectedJobId !== 0 && 
-                <JobDetail jobId={selectedJobId}/>
+                <JobDetail setJobId={setSelectedJobId} jobId={selectedJobId}/>
             }
         </Col>
         </>
