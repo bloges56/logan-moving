@@ -41,7 +41,6 @@ export const JobDetail = ({jobId, setJobId}) => {
         })
     }, [])
 
-    debugger;
     return(
         <Container>
             <Row>
@@ -107,6 +106,20 @@ export const JobDetail = ({jobId, setJobId}) => {
                     <h4>{job?.locations[1].zip}</h4>
                 </Col>
             </Row>
+            <Row>
+                <Col>
+                    <h3>Assigned Employees</h3>
+                </Col>
+            </Row>
+            {
+               employees.map(employee => {
+                   return <Row key={employee?.employee.id}>
+                       <Col>
+                            <h4>{employee?.employee.firstName + " " + employee?.employee.lastName}</h4>
+                       </Col>
+                   </Row>
+               }) 
+            }
             <Row>
                 <Col>
                     <Button color="danger" onClick={() => {
