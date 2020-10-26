@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { JobsContext } from "./JobsProvider"
+import { EmployeeJobsContext } from "../employeeJobs/EmployeeJobsProvider"
 import { Container, Row, Col, Button } from "reactstrap"
 
 export const JobDetail = ({jobId, setJobId}) => {
@@ -19,17 +21,20 @@ export const JobDetail = ({jobId, setJobId}) => {
         return [year, month, day].join('-');
     }
 
+    //get the needed functions from the conextes
     const { getJobById, removeJob } = useContext(JobsContext)
+    const { assigned, getEmployeeJobsByJobId } = useContext(EmployeeJobsContext)
 
-    const[ job, setJob ] = useState(null)
+    //set state for job and employees
+    const [ job, setJob ] = useState(null)
 
     useEffect(() => {
         getJobById(jobId)
         .then((response) => {
             setJob(response)
         })
+        .then(getEmployeeJobsByJobId(jobId))
     }, [])
-
 
     return(
         <Container>
@@ -96,6 +101,23 @@ export const JobDetail = ({jobId, setJobId}) => {
                     <h4>{job?.locations[1].zip}</h4>
                 </Col>
             </Row>
+            <Row>
+                <Col>
+                    <h3>Assigned Employees</h3>
+                </Col>
+                <Col>
+                    <Link to={`/jobs/addEmployeesToJob/${jobId}`}>Add Employees</Link>
+                </Col>
+            </Row>
+            {
+               assigned.map(employee => {
+                   return <Row key={employee?.employee.id}>
+                       <Col>
+                            <h4>{employee?.employee.firstName + " " + employee?.employee.lastName}</h4>
+                       </Col>
+                   </Row>
+               }) 
+            }
             <Row>
                 <Col>
                     <Button color="danger" onClick={() => {
