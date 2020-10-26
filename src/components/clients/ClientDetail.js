@@ -1,10 +1,11 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { ClientsContext } from "./ClientsProvider"
-import { Container, Row, Col } from "reactstrap"
+import { Container, Row, Col, Button } from "reactstrap"
 
 
 export const ClientDetail = () => {
-    const { selectedClient } = useContext(ClientsContext)
+    const { selectedClient, removeClient } = useContext(ClientsContext)
+
 
     return (
         <>
@@ -15,6 +16,12 @@ export const ClientDetail = () => {
                     <h3>
                         {selectedClient.firstName + " " + selectedClient.lastName}
                     </h3>
+                </Col>
+                <Col>
+                    <Button onClick={event => {
+                        event.preventDefault()
+                        removeClient(selectedClient.id)
+                    }}>Remove Client</Button>
                 </Col>
             </Row>
         </Container>

@@ -23,9 +23,19 @@ export const ClientsProvider = props => {
         })
     }
 
+    const removeClient = id => {
+        return fetch(`http://localhost:8088/clients/${id}`, {
+            method: "DELETE"
+        })
+            .then(getClients)
+            .then(() => {
+                setSelectedClient({})
+            })
+    }
+
     return (
         <ClientsContext.Provider value= {{
-            clients, getClients, selectedClient, setSelectedClient, addClient
+            clients, getClients, selectedClient, setSelectedClient, addClient, removeClient
         }}>
             {props.children}
         </ClientsContext.Provider>
