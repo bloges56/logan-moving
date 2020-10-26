@@ -8,32 +8,47 @@ export const AddEmployeesToJob = () => {
     //get the jobId passed in the url
     const { jobId } = useParams()
     //get necessary functions from context
-    const { assigned, getEmployeeJobsByJobId, addEmployeeJob, removeEmployeeJob } = useContext(EmployeeJobsContext)
+    const { employeeJobs, getEmployeeJobs, getEmployeeJobsByJobId, addEmployeeJob, removeEmployeeJob } = useContext(EmployeeJobsContext)
     const { employees, getEmployees } = useContext(EmployeesContext)
+
+    
 
     //grab necessary data from database
     useEffect(() => {
-
         getEmployees()
-        .then(() => {
-            getEmployeeJobsByJobId(jobId)
-        })
+        .then(getEmployeeJobs)
+    }, [])
 
+    
 
-    }, [assigned])
-
-
-    //filter out employees that are not assigned to the current job
-    const notAssigned = employees.filter(employee => {
-        let check = true
-        assigned.forEach(assignee => {
-            if(assignee.employeeId === employee.id){
-                check = false
+    //function to get all the unAssignedEmployees
+    const filterOutAssigned = () => {
+        return employees.filter(employee => {
+            let check = true;
+            if(employeeJobs){
+                employeeJobs.forEach(employeeJob => {
+                    if(employeeJob.jobId === parseInt(jobId) && employeeJob.employeeId === employee.id){
+                        check = false;
+                    }
+                })
             }
+            return check;
         })
-        return check
-    })
+    }
 
+    const filterOutUnAssigned = () => {
+        return employees.filter(employee => {
+            let check = false;
+            if(employeeJobs){
+                employeeJobs.forEach(employeeJob => {
+                    if(employeeJob.jobId === parseInt(jobId) && employeeJob.employeeId === employee.id){
+                        check =  true;
+                    }
+                })
+            }
+            return check;
+        })
+    }
 
     return (
         <>
@@ -49,20 +64,21 @@ export const AddEmployeesToJob = () => {
                 <Row>
                     <Col xs="4">
                         <ListGroup>
-                            {notAssigned.map(employee => {
-                                return <ListGroupItem key={employee.id}><h3>{employee.firstName + " " + employee.lastName}</h3><Button onClick={e=>{
-                                    e.preventDefault()
-                                    addEmployeeJob(parseInt(jobId), employee.id)
-                                }}>Add</Button></ListGroupItem>
-                            })}
+                            {filterOutAssigned().map(employee => {
+                                    return <ListGroupItem key={employee.id}><h3>{employee.firstName + " " + employee.lastName}</h3><Button onClick={e=>{
+                                        e.preventDefault()
+                                        addEmployeeJob(parseInt(jobId), employee.id)
+                                    }}>Add</Button></ListGroupItem>}
+                                )
+                            }
                         </ListGroup>
                     </Col>
                     <Col xs={{ size: 4, offset: 2 }}>
                         <ListGroup>
-                            {assigned.map(employee => {
-                                return <ListGroupItem key={employee.employeeId}><h3>{employee.employee.firstName + " " + employee.employee.lastName}</h3><Button onClick={e=>{
+                            {filterOutUnAssigned().map(employee => {
+                                return <ListGroupItem key={employee.id}><h3>{employee.firstName + " " + employee.lastName}</h3><Button onClick={e=>{
                                     e.preventDefault()
-                                    removeEmployeeJob(employee, parseInt(jobId))
+                                    removeEmployeeJob(employee.id, parseInt(jobId))
                                 }}>Remove</Button></ListGroupItem>
                             })}
                         </ListGroup>
