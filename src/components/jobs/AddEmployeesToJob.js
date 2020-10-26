@@ -8,7 +8,7 @@ export const AddEmployeesToJob = () => {
     //get the jobId passed in the url
     const { jobId } = useParams()
     //get necessary functions from context
-    const { assigned, getEmployeeJobsByJobId, addEmployeeJob } = useContext(EmployeeJobsContext)
+    const { assigned, getEmployeeJobsByJobId, addEmployeeJob, removeEmployeeJob } = useContext(EmployeeJobsContext)
     const { employees, getEmployees } = useContext(EmployeesContext)
 
     //grab necessary data from database
@@ -34,7 +34,6 @@ export const AddEmployeesToJob = () => {
         return check
     })
 
-    debugger;
 
     return (
         <>
@@ -61,7 +60,10 @@ export const AddEmployeesToJob = () => {
                     <Col xs={{ size: 4, offset: 2 }}>
                         <ListGroup>
                             {assigned.map(employee => {
-                                return <ListGroupItem key={employee.employeeId}><h3>{employee.employee.firstName + " " + employee.employee.lastName}</h3></ListGroupItem>
+                                return <ListGroupItem key={employee.employeeId}><h3>{employee.employee.firstName + " " + employee.employee.lastName}</h3><Button onClick={e=>{
+                                    e.preventDefault()
+                                    removeEmployeeJob(employee, parseInt(jobId))
+                                }}>Remove</Button></ListGroupItem>
                             })}
                         </ListGroup>
                     </Col>

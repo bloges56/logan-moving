@@ -19,21 +19,28 @@ export const EmployeeJobsProvider = props => {
     //add an employeeJob
     const addEmployeeJob = (jobId, employeeId) => {
         return fetch("http://localhost:8088/employeeJobs", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                employeeId: employeeId,
-                                jobId: jobId,
-                            })
-                        })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                employeeId: employeeId,
+                jobId: jobId,
+            })
+        })
+
+    }
+
+    const removeEmployeeJob = (employeeJob, jobId) => {
+        return fetch(`http://localhost:8088/employeeJobs/${employeeJob.id}`, {
+            method: "DELETE"
+        })
     }
 
     //return the context with the functions
     return (
         <EmployeeJobsContext.Provider value={{
-            assigned, getEmployeeJobsByJobId, addEmployeeJob
+            assigned, getEmployeeJobsByJobId, addEmployeeJob, removeEmployeeJob
         }}>
             {props.children}
         </EmployeeJobsContext.Provider>
