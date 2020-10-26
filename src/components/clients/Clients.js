@@ -1,18 +1,22 @@
-import React, {useState, useContext, useEffect } from "react"
-import { ClientsContext } from "./ClientsProvider"
+import React from "react"
+import { ClientList } from "./ClientList"
+import { ClientDetail } from "./ClientDetail"
+import { Container, Row, Col } from "reactstrap"
 
 export const Clients = () => {
-    const [selectedClient, setSelectedClient ] = useState({})
 
-    const { clients, getClients } = useContext(ClientsContext)
 
-    useEffect(() => {
-        getClients()
-    }, [])
-    debugger;
     return (
-        <>
-
-        </>
+        <Container>
+            <h1>Clients</h1>
+            <Row>
+                <Col xs="4">
+                    <ClientList />
+                </Col>
+                <Col xs="4">
+                    <ClientDetail />
+                </Col>
+            </Row>
+        </Container>
     )
 }

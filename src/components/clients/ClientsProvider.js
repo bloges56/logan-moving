@@ -5,6 +5,7 @@ export const ClientsContext = createContext()
 export const ClientsProvider = props => {
 
     const [ clients, setClients ] = useState([])
+    const [selectedClient, setSelectedClient ] = useState({})
 
     const getClients = () => {
         return fetch("http://localhost:8088/clients")
@@ -15,7 +16,7 @@ export const ClientsProvider = props => {
 
     return (
         <ClientsContext.Provider value= {{
-            clients, getClients
+            clients, getClients, selectedClient, setSelectedClient
         }}>
             {props.children}
         </ClientsContext.Provider>
