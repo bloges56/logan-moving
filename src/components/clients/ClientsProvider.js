@@ -5,6 +5,7 @@ export const ClientsContext = createContext()
 export const ClientsProvider = props => {
 
     const [ clients, setClients ] = useState([])
+    const [selectedClient, setSelectedClient ] = useState({})
 
     const getClients = () => {
         return fetch("http://localhost:8088/clients")
@@ -12,10 +13,29 @@ export const ClientsProvider = props => {
         .then(setClients)
     }
 
+    const addClient = client => {
+        return fetch("http://localhost:8088/clients", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(client)
+        })
+    }
+
+    const removeClient = id => {
+        return fetch(`http://localhost:8088/clients/${id}`, {
+            method: "DELETE"
+        })
+            .then(getClients)
+            .then(() => {
+                setSelectedClient({})
+            })
+    }
 
     return (
         <ClientsContext.Provider value= {{
-            clients, getClients
+            clients, getClients, selectedClient, setSelectedClient, addClient, removeClient
         }}>
             {props.children}
         </ClientsContext.Provider>
