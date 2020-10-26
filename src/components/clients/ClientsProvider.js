@@ -13,10 +13,19 @@ export const ClientsProvider = props => {
         .then(setClients)
     }
 
+    const addClient = client => {
+        return fetch("http://localhost:8088/clients", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(client)
+        })
+    }
 
     return (
         <ClientsContext.Provider value= {{
-            clients, getClients, selectedClient, setSelectedClient
+            clients, getClients, selectedClient, setSelectedClient, addClient
         }}>
             {props.children}
         </ClientsContext.Provider>
