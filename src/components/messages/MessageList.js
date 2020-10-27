@@ -83,30 +83,24 @@ export const MessageList = () => {
         )
     }
 
-    const EditableMessage = () => {
-        return (
-            <InputGroup>
-                <Input type="text" name="message" value={editMessage.message} onChange={handleInputControlChangeEdit}></Input>
-                <InputGroupAddon addonType="append"><Button onClick={ event => {
-                    event.preventDefault()
-                    constructEditMessage()
-                }}>Edit</Button></InputGroupAddon>
-            </InputGroup>
-        )
-        
-        
-    }
-
     return (
         <>
             <ListGroup>
                 {messages.map(message => {
                     return <ListGroupItem key={message.id}>
                         <ListGroupItemHeading>{message.user?.username}</ListGroupItemHeading>
-                        {showDisplayOnlyMessage || message.id !== editMessage.id ? <DisplayOnlyMessage message={message}/> : <EditableMessage />}
+                        {showDisplayOnlyMessage || message.id !== editMessage.id ? <DisplayOnlyMessage message={message}/> : 
+                            <InputGroup>
+                                <Input type="text" name="message" value={editMessage.message} onChange={handleInputControlChangeEdit}></Input>
+                                <InputGroupAddon addonType="append"><Button onClick={ event => {
+                                    event.preventDefault()
+                                    constructEditMessage()
+                                }}>Edit</Button></InputGroupAddon>
+                            </InputGroup>
+                        }
                         {message.userId === parseInt(localStorage.getItem("current_user")) &&
                             <>
-                                {showDisplayOnlyMessage  && <EditButton message={message}/>}
+                                {showDisplayOnlyMessage || message.id !== editMessage.id ? <EditButton message={message}/> : <></>}
                                 <Button color="danger" onClick={event => {
                                     event.preventDefault()
                                     deleteMessage(message.id)
@@ -121,7 +115,10 @@ export const MessageList = () => {
                     event.preventDefault()
                     constructMessage()
                 }}>Send</Button></InputGroupAddon>
-                <Input type="text" name="message" value={message.message} onChange={handleInputControlChange} required />
+                <Input type="text" name="message" value={message.message} onChange={handleInputControlChange} onClick={event => {
+                    event.preventDefault()
+                    setShowDisplayOnlyMessage(true)
+                }} required />
             </InputGroup>
         </>
     )

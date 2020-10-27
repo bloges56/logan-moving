@@ -15,7 +15,7 @@ export const Messages = () => {
                 </Col>
             </Row>
             <Row>
-                <Col xs="2">
+                <Col xs="4">
                     <MessageList />
                 </Col>
             </Row>
