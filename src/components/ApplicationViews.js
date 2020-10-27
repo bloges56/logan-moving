@@ -15,14 +15,18 @@ import { Employees } from "./employees/Employees"
 import { EmployeeForm } from "./employees/EmployeeForm"
 import { MessagesProvider } from "./messages/MessagesProvider"
 import { Messages } from "./messages/Messages"
+import { WeatherProvider } from "./weather/WeatherProvider"
 
 export const ApplicationViews = props => {
     return (
         <>
 
-            <Route exact path="/">
-                <Home />
-            </Route>
+
+            <WeatherProvider>
+                <Route exact path="/">
+                    <Home />
+                </Route>
+            </WeatherProvider>
 
             <JobsProvider>
 
