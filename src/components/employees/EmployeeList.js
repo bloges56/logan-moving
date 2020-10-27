@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useEffect, useContext } from "react"
 import { EmployeesContext } from "./EmployeesProvider"
 import { ListGroup, ListGroupItem, Button} from "reactstrap"
 
