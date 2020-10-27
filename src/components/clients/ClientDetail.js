@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
 import { ClientsContext } from "./ClientsProvider"
 import { Container, Row, Col, Button } from "reactstrap"
 
