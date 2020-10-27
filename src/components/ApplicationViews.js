@@ -63,6 +63,11 @@ export const ApplicationViews = props => {
                     <ClientForm />
                 </Route>
 
+                <Route exact path = "/clients/edit/:clientId(\d+)">
+                    <ClientForm />
+                </Route>
+                
+
             </ClientsProvider>
 
             <EmployeesProvider>

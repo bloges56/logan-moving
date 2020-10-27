@@ -33,9 +33,24 @@ export const ClientsProvider = props => {
             })
     }
 
+    const editClient = client => {
+        return fetch(`http://localhost:8088/clients/${client.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(client)
+        })
+    }
+
+    const getClientById = id => {
+        return fetch(`http://localhost:8088/clients/${id}`)
+        .then(res => res.json())
+    }
+
     return (
         <ClientsContext.Provider value= {{
-            clients, getClients, selectedClient, setSelectedClient, addClient, removeClient
+            clients, getClients, selectedClient, setSelectedClient, addClient, removeClient, editClient, getClientById
         }}>
             {props.children}
         </ClientsContext.Provider>

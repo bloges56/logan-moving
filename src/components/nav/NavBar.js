@@ -7,19 +7,19 @@ export const NavBar = () => {
         <Navbar expand="xs">
             <Nav navbar>
                 <NavItem>
-                    <NavLink><Link to="/">home</Link></NavLink>
+                    <Link to="/">home</Link>
                 </NavItem>
                 <NavItem>
-                    <NavLink><Link to="/jobs">Jobs</Link></NavLink>
+                    <Link to="/jobs">Jobs</Link>
                 </NavItem>
                 <NavItem>
-                    <NavLink><Link to="/clients">Clients</Link></NavLink>
+                    <Link to="/clients">Clients</Link>
                 </NavItem>
                 <NavItem>
-                    <NavLink><Link to="/employees">Employees</Link></NavLink>
+                    <Link to="/employees">Employees</Link>
                 </NavItem>
                 <NavItem>
-                    <NavLink><Link to="/messages">Messages</Link></NavLink>
+                    <Link to="/messages">Messages</Link>
                 </NavItem>
             </Nav>
         </Navbar>
