@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { EmployeesContext } from "./EmployeesProvider"
-import { useHistory } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { Form, FormGroup, Input, Label, Button } from "reactstrap"
 
 export const EmployeeForm = () => {
 
-    const { hireEmployee } = useContext(EmployeesContext)
+    const { hireEmployee, getEmployeeById, editEmployee } = useContext(EmployeesContext)
 
     const [ employee, setEmployee ] = useState({
         firstName: "",
@@ -13,6 +13,17 @@ export const EmployeeForm = () => {
         dateHired: "",
         phone: ""
     })
+
+    const {employeeId} = useParams()
+
+    useEffect(() => {
+        if(employeeId){
+            getEmployeeById(employeeId)
+            .then(res => {
+                setEmployee(res)
+            })
+        }
+    }, [])
 
     const handleInputControlChange = event => {
         const newEmployee = { ...employee }
@@ -23,15 +34,29 @@ export const EmployeeForm = () => {
     const history = useHistory()
 
     const constructEmployee = () => {
-        hireEmployee({
-            firstName: employee.firstName,
-            lastName: employee.lastName,
-            dateHired: (new Date()).getTime(),
-            phone: parseInt(employee.phone)
-        })
-        .then(() => {
-            history.push("/employees")
-        })
+        if(employeeId){
+            editEmployee({
+                id: employee.id,
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                dateHired: employee.dateHired,
+                phone: parseInt(employee.phone)
+            })
+            .then(() => {
+                history.push("/employees")
+            })
+        }
+        else{
+            hireEmployee({
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                dateHired: (new Date()).getTime(),
+                phone: parseInt(employee.phone)
+            })
+            .then(() => {
+                history.push("/employees")
+            })
+        }
     }
 
     return (
@@ -52,7 +77,7 @@ export const EmployeeForm = () => {
                 event.preventDefault()
                 constructEmployee()
             }}>
-                Hire
+                {employeeId ? "Update" : "Hire"}
             </Button>
         </Form>
     )
