@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react"
-import { useHistory } from "react-router-dom"
+import React, { useState, useContext, useEffect } from "react"
+import { useHistory, useParams } from "react-router-dom"
 import { ClientsContext } from "./ClientsProvider"
 import { Form, FormGroup, Label, Input, Button } from "reactstrap"
 
 
 export const ClientForm = () => {
 
-    const { addClient } = useContext(ClientsContext)
+    const { addClient, editClient, getClientById } = useContext(ClientsContext)
 
     const [client, setClient ] = useState({
         firstName: "",
@@ -15,24 +15,49 @@ export const ClientForm = () => {
         phone: ""
     })
 
+    const {clientId} = useParams()
+
     const handleControlledInputChange = (event) => {
         const newClient = { ...client }
         newClient[event.target.name] = event.target.value
         setClient(newClient)
     }
 
+    useEffect(() => {
+        if(clientId){
+            getClientById(clientId)
+            .then(res => {
+                setClient(res)
+            })
+        }
+    }, [])
+
     const history = useHistory()
 
     const constructClient = () => {
-        addClient({
-            firstName: client.firstName,
-            lastName: client.lastName,
-            email: client.email,
-            phone: parseInt(client.phone)
-        })
-        .then(() => {
-            history.push("/clients")
-        })
+        if(clientId){
+            editClient({
+                id: client.id,
+                firstName: client.firstName,
+                lastName: client.lastName,
+                email: client.email,
+                phone: client.phone
+            })
+            .then(() => {
+                history.push("/clients")
+            })
+        }
+        else{
+            addClient({
+                firstName: client.firstName,
+                lastName: client.lastName,
+                email: client.email,
+                phone: parseInt(client.phone)
+            })
+            .then(() => {
+                history.push("/clients")
+            })
+        }
     }
 
     return (
@@ -57,7 +82,7 @@ export const ClientForm = () => {
                 event.preventDefault()
                 constructClient()
 
-            }}>Add Client</Button>
+            }}>{clientId ? "Update" : "Add"}</Button>
         </Form>
     )
 }
