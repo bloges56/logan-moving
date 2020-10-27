@@ -30,9 +30,20 @@ export const MessagesProvider = props => {
             .then(getMessages)
     }
 
+    const changeMessage = message => {
+        return fetch(`http://localhost:8088/messages/${message.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(message)
+        })
+        .then(getMessages)
+    }
+
     return (
         <MessagesContext.Provider value={{
-            messages, getMessages, sendMessage, deleteMessage
+            messages, getMessages, sendMessage, deleteMessage, changeMessage
         }}>
             {props.children}
         </MessagesContext.Provider>
