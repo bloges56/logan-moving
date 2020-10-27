@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Inpu
 
 export const MessageList = () => {
 
-    const { messages, getMessages, sendMessage } = useContext(MessagesContext)
+    const { messages, getMessages, sendMessage, deleteMessage } = useContext(MessagesContext)
 
     const [ message, setMessage ] = useState({
         message: "",
@@ -46,6 +46,12 @@ export const MessageList = () => {
                     return <ListGroupItem key={message.id}>
                         <ListGroupItemHeading>{message.user?.username}</ListGroupItemHeading>
                         <ListGroupItemText>{message.message}</ListGroupItemText>
+                        {message.userId === parseInt(localStorage.getItem("current_user")) &&
+                            <Button color="danger" onClick={event => {
+                                event.preventDefault()
+                                deleteMessage(message.id)
+                            }}>Delete</Button>
+                        }
                     </ListGroupItem>
                 })}
             </ListGroup>
