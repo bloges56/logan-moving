@@ -4,7 +4,7 @@ import { Navbar, Nav, NavItem, NavLink } from "reactstrap"
 
 export const NavBar = () => {
     return (
-        <Navbar>
+        <Navbar expand="xs">
             <Nav navbar>
                 <NavItem>
                     <NavLink><Link to="/">home</Link></NavLink>
