@@ -11,6 +11,8 @@ import { EmployeeJobsProvider } from "./employeeJobs/EmployeeJobsProvider"
 import { EmployeesProvider } from "./employees/EmployeesProvider"
 import { Clients } from "./clients/Clients"
 import { ClientForm } from "./clients/ClientForm"
+import { Employees } from "./employees/Employees"
+import { EmployeeForm } from "./employees/EmployeeForm"
 
 export const ApplicationViews = props => {
     return (
@@ -56,6 +58,18 @@ export const ApplicationViews = props => {
                 </Route>
 
             </ClientsProvider>
+
+            <EmployeesProvider>
+
+                <Route exact path = "/employees">
+                    <Employees />
+                </Route>
+
+                <Route exact path = "/employees/form">
+                    <EmployeeForm />
+                </Route>
+
+            </EmployeesProvider>
         </>
 
     )
