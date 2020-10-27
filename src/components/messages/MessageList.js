@@ -12,6 +12,8 @@ export const MessageList = () => {
         public: true
     })
     
+    const [isLoading, setIsLoading ] = useState(false)
+
     const [ editMessage, setEditMessage ] = useState({
         message: "",
         userId: parseInt(localStorage.getItem("current_user")),
@@ -32,6 +34,7 @@ export const MessageList = () => {
 
     const constructEditMessage = () => {
         if(editMessage.message.trim().length !== 0){
+            setIsLoading(true)
             changeMessage({
                 id: editMessage.id,
                 message: editMessage.message,
@@ -40,12 +43,14 @@ export const MessageList = () => {
             })
             .then(() => {
                 setShowDisplayOnlyMessage(true)
+                setIsLoading(false)
             })
         }
     }
     
     const constructMessage = () => {
         if(message.message.trim().length !== 0){
+            setIsLoading(true)
             sendMessage({
                 message: message.message,
                 userId: message.userId,
@@ -57,6 +62,7 @@ export const MessageList = () => {
                     userId: parseInt(localStorage.getItem("current_user")),
                     public: true
                 })
+                setIsLoading(false)
             })
         }   
     }
@@ -92,7 +98,7 @@ export const MessageList = () => {
                         {showDisplayOnlyMessage || message.id !== editMessage.id ? <DisplayOnlyMessage message={message}/> : 
                             <InputGroup>
                                 <Input type="text" name="message" value={editMessage.message} onChange={handleInputControlChangeEdit}></Input>
-                                <InputGroupAddon addonType="append"><Button onClick={ event => {
+                                <InputGroupAddon addonType="append"><Button disabled={isLoading} onClick={ event => {
                                     event.preventDefault()
                                     constructEditMessage()
                                 }}>Edit</Button></InputGroupAddon>
@@ -101,9 +107,13 @@ export const MessageList = () => {
                         {message.userId === parseInt(localStorage.getItem("current_user")) &&
                             <>
                                 {showDisplayOnlyMessage || message.id !== editMessage.id ? <EditButton message={message}/> : <></>}
-                                <Button color="danger" onClick={event => {
+                                <Button color="danger" disabled={isLoading} onClick={event => {
                                     event.preventDefault()
+                                    setIsLoading(true)
                                     deleteMessage(message.id)
+                                    .then(() =>{
+                                        setIsLoading(false)
+                                    })
                                 }}>Delete</Button>
                             </>
                         }
@@ -111,7 +121,7 @@ export const MessageList = () => {
                 })}
             </ListGroup>
             <InputGroup>
-                <InputGroupAddon addonType="prepend"><Button onClick={event => {
+                <InputGroupAddon addonType="prepend"><Button disabled={isLoading} onClick={event => {
                     event.preventDefault()
                     constructMessage()
                 }}>Send</Button></InputGroupAddon>
