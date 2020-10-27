@@ -7,30 +7,33 @@ import { Button, Form, FormGroup, Label, Input } from "reactstrap"
 
 export const JobForm = () => {
     //get the addJob function from JobsContext
-    const { addJob } = useContext(JobsContext)
+    const { addJob, getJobById, editJob } = useContext(JobsContext)
 
     //get clients array and getCLients method from Clients Context
     const { clients, getClients } = useContext(ClientsContext)
 
     //get the addLocations method from LocationsContext
-    const { addLocation } = useContext(LocationsContext)
+    const { addLocation, editLocation } = useContext(LocationsContext)
 
     //create state for the current job
     const [ job, setJob ] = useState({
-        title: ""
+        title: "",
+        date: ""
     })
+
+    const {jobId} = useParams()
 
     //set state for move in and move out locations
     const [ moveIn, setMoveIn ] = useState({
         street: "",
         state: "",
-        zip: 0,
+        zip: "",
         description: "",
     })
     const [ moveOut, setMoveOut ] = useState({
         street: "",
         state: "",
-        zip: 0,
+        zip: "",
         description: "",
     })
 
@@ -46,7 +49,13 @@ export const JobForm = () => {
     //update state of job as the job fields change
     const handleControlledInputChangeJob = event => {
         const newJob = { ...job }
-        newJob[event.target.name] = event.target.value
+        if(event.target.name === "date"){
+            newJob.date = (Math.ceil((new Date(event.target.value)).getTime() / 86400000) * 86400000) - (19 * 3600000) + 86400000
+            debugger;
+        }
+        else{
+            newJob[event.target.name] = event.target.value
+        }
         setJob(newJob)
     }
 
@@ -69,7 +78,18 @@ export const JobForm = () => {
     useEffect(() => {
         getClients()
         .then(() => {
-            setIsLoading(false)
+            if(jobId){
+                getJobById(jobId)
+                .then(job => {
+                    setJob(job)
+                    setMoveIn(job.locations[0])
+                    setMoveOut(job.locations[1])
+                    setIsLoading(false)
+                })
+            }
+            else{
+                setIsLoading(false)
+            }
         })
     }, [])
 
@@ -90,34 +110,68 @@ export const JobForm = () => {
     
     //add the job and locations to the database
     const constructJobAndLocationsObjects = () => {
-        addJob({
-            title: job.title,
-            clientId: parseInt(job.clientId),
-            date: parseInt(date)
-        })
-        .then(res => res.json())
-        .then(parsedRes => {
-            return addLocation({
-                jobId: parsedRes.id,
-                street: moveIn.street,
-                state: moveIn.state,
-                zip: parseInt(moveIn.zip),
-                description: moveIn.description,
-                moveIn: true
-            })  
-        })
-        .then(moveInRes => moveInRes.json())
-        .then(parsedMoveIn => {
-            addLocation({
-                jobId: parsedMoveIn.jobId,
-                street: moveOut.street,
-                state: moveOut.state,
-                zip: parseInt(moveOut.zip),
-                description: moveOut.description,
-                moveIn: false
-            }) 
-        })
-        .then(() => history.push("/jobs"))
+        setIsLoading(true)
+        if(jobId){
+            editJob({
+                id: job.id,
+                title: job.title,
+                clientId: parseInt(job.clientId),
+                date: parseInt(job.date)
+            })
+            .then(() => {
+                return editLocation({
+                    id: moveIn.id,
+                    jobId: parseInt(jobId),
+                    street: moveIn.street,
+                    state: moveIn.state,
+                    zip: parseInt(moveIn.zip),
+                    description: moveIn.description,
+                    moveIn: true
+                })
+            })
+            .then(() => {
+                return editLocation({
+                    id: moveOut.id,
+                    jobId: parseInt(jobId),
+                    street: moveOut.street,
+                    state: moveOut.state,
+                    zip: parseInt(moveOut.zip),
+                    description: moveOut.description,
+                    moveIn: false
+                })
+            })
+            .then(() => history.push("/jobs"))
+        }
+        else{
+            addJob({
+                title: job.title,
+                clientId: parseInt(job.clientId),
+                date: parseInt(date)
+            })
+            .then(res => res.json())
+            .then(parsedRes => {
+                return addLocation({
+                    jobId: parsedRes.id,
+                    street: moveIn.street,
+                    state: moveIn.state,
+                    zip: parseInt(moveIn.zip),
+                    description: moveIn.description,
+                    moveIn: true
+                })  
+            })
+            .then(moveInRes => moveInRes.json())
+            .then(parsedMoveIn => {
+                addLocation({
+                    jobId: parsedMoveIn.jobId,
+                    street: moveOut.street,
+                    state: moveOut.state,
+                    zip: parseInt(moveOut.zip),
+                    description: moveOut.description,
+                    moveIn: false
+                }) 
+            })
+            .then(() => history.push("/jobs"))
+        }
     }
 
     
@@ -131,7 +185,8 @@ export const JobForm = () => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-date">Date: </Label>
-                    <Input type="date" name="date" id="job-date" value={formatDate(parseInt(date))} disabled={true}/>
+                    {!jobId && <Input type="date" name="date" id="job-date" value={formatDate(parseInt(date))} disabled={true}/>}
+                    {jobId && <Input type="date" name="date" id="job-date" value={formatDate(parseInt(job.date))} onChange={handleControlledInputChangeJob}/>}
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-client">Select Client</Label>
@@ -171,7 +226,7 @@ export const JobForm = () => {
                             event.preventDefault()
                             constructJobAndLocationsObjects()
                     }}>
-                        Add Job
+                        {jobId ? "Update Job" : "Add Job"}
                     </Button>
                 </FormGroup>
             </Form>

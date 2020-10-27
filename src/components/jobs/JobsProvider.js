@@ -38,10 +38,20 @@ export const JobsProvider = props => {
             .then(getJobs)
     }
 
+    const editJob = job => {
+        return fetch(`http://localhost:8088/jobs/${job.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(job)
+        })
+    }
+
     //return the functions through JobsContext
     return (
         <JobsContext.Provider value = {{
-            jobs, getJobs, addJob, getJobById, removeJob
+            jobs, getJobs, addJob, getJobById, removeJob, editJob
         }}>
             {props.children}
         </JobsContext.Provider>

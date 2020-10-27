@@ -45,6 +45,10 @@ export const ApplicationViews = props => {
                         <Route exact path="/jobs/form" >
                             <JobForm />
                         </Route>
+
+                        <Route exact path = "/jobs/edit/:jobId(\d+)">
+                            <JobForm />
+                        </Route>
                     </ClientsProvider>
                 </LocationsProvider>
                

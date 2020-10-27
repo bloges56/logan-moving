@@ -120,6 +120,9 @@ export const JobDetail = ({jobId, setJobId}) => {
             }
             <Row>
                 <Col>
+                    <Link to={`/jobs/edit/${jobId}`}>Edit</Link>
+                </Col>
+                <Col>
                     <Button color="danger" onClick={() => {
                         removeJob(jobId)
                         .then(() => {
