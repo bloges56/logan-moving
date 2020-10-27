@@ -38,10 +38,25 @@ export const EmployeesProvider = props => {
             })
     }
 
+    const editEmployee = employee => {
+        return fetch(`http://localhost:8088/employees/${employee.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(employee)
+        })
+    }
+
+    const getEmployeeById = id => {
+        return fetch(`http://localhost:8088/employees/${id}`)
+        .then(res => res.json())
+    }
+
     //return the context with the functions
     return (
         <EmployeesContext.Provider value={{
-            employees, getEmployees, selectedEmployee, setSelectedEmployee, hireEmployee, fireEmployee
+            employees, getEmployees, selectedEmployee, setSelectedEmployee, hireEmployee, fireEmployee, editEmployee, getEmployeeById
         }}>
             {props.children}
         </EmployeesContext.Provider>

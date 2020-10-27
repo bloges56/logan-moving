@@ -80,6 +80,10 @@ export const ApplicationViews = props => {
                     <EmployeeForm />
                 </Route>
 
+                <Route exact path = "/employees/edit/:employeeId(\d+)">
+                    <EmployeeForm />
+                </Route>
+
             </EmployeesProvider>
 
             <MessagesProvider>

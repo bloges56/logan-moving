@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { Link } from "react-router-dom"
 import { EmployeesContext } from "./EmployeesProvider"
 import { Container, Row, Col, Button } from "reactstrap"
 
@@ -13,6 +14,9 @@ export const EmployeeDetail = () => {
                 <Row>
                     <Col>
                         <h2>{selectedEmployee.firstName + " " + selectedEmployee.lastName}</h2>
+                    </Col>
+                    <Col>
+                        <Link to={`/employees/edit/${selectedEmployee.id}`}>Edit</Link>
                     </Col>
                     <Col>
                         <Button color="danger" onClick={event => {
