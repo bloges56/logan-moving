@@ -4,12 +4,28 @@ import { Container, Row, Col } from "reactstrap"
 
 export const Home = () => {
 
-    const { currentWeather, getCurrentWeather } = useContext(WeatherContext)
+    const { currentWeather, getCurrentWeather, getWeatherByCoords } = useContext(WeatherContext)
+
+    let lat = null;
+    let long = null;
+
+    const setLatAndLong = (position) => {
+        lat = Math.round(position.coords.latitude)
+        long = Math.round(position.coords.longitude)
+    }
+
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(setLatAndLong)
+    }
 
     useEffect(() => {
-        getCurrentWeather()
+        if(lat){
+            getWeatherByCoords(lat, long)
+        }
+        else{
+            getCurrentWeather()
+        }
     }, [])
-
 
     return (
         <Container>

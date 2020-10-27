@@ -10,15 +10,19 @@ export const WeatherProvider = props => {
     const getCurrentWeather = () => {
         return fetch(`http://api.openweathermap.org/data/2.5/weather?units=imperial&zip=19013&appid=${defaultExport.weatherKey}`)
         .then(res => res.json())
-        .then(weather => {
-            debugger
-            setCurrentWeather(weather)
-        })
+        .then(setCurrentWeather)
+    }
+
+    const getWeatherByCoords = (lat, long) => {
+        debugger;
+        return fetch(`http://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${lat}&lon=${long}&appid=${defaultExport.weatherKey}`)
+        .then(res => res.json())
+        .then(setCurrentWeather)
     }
 
     return (
         <WeatherContext.Provider value={{
-            currentWeather, getCurrentWeather
+            currentWeather, getCurrentWeather, getWeatherByCoords
         }}>
             {props.children}
         </WeatherContext.Provider>
