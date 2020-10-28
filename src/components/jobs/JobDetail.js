@@ -29,7 +29,7 @@ export const JobDetail = ({jobId, setJobId}) => {
 
     useEffect(() => {
         getEmployeeJobsByJobId(selectedJob.id)
-    }, [])
+    }, [selectedJob])
 
 
     return(
@@ -57,7 +57,7 @@ export const JobDetail = ({jobId, setJobId}) => {
                     <h3>Assigned Employees</h3>
                 </Col>
                 <Col>
-                    <Link to={`/jobs/addEmployeesToJob/${jobId}`}>Add Employees</Link>
+                    <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}>Add Employees</Link>
                 </Col>
             </Row>
             {
