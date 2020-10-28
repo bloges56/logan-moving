@@ -16,7 +16,7 @@ export const UserList = () => {
                 setSelectedUser({})
             }}>Public Chat</ListGroupItem>
             {users.map(user => {
-                return <ListGroupItem key={user.id} tag="button" action onClick={event => {
+                return user.id !== parseInt(localStorage.getItem("current_user")) && <ListGroupItem key={user.id} tag="button" action onClick={event => {
                     event.preventDefault()
                     setSelectedUser(user)
                 }}>{user.username}</ListGroupItem>

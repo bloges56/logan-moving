@@ -1,14 +1,18 @@
 import React, { useContext, useEffect, useState } from "react"
 import { MessagesContext } from "./MessagesProvider"
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, InputGroup, InputGroupAddon, Input, Button } from "reactstrap"
+import { UsersContext } from "../users/UsersProvider"
 
 export const MessageList = () => {
 
-    const { messages, getMessages, sendMessage, deleteMessage, changeMessage } = useContext(MessagesContext)
+    const { messages, getMessages, sendMessage, deleteMessage, changeMessage, setMessages } = useContext(MessagesContext)
+
+    const { selectedUser, setSelectedUser } = useContext(UsersContext)
 
     const [ message, setMessage ] = useState({
         message: "",
         userId: parseInt(localStorage.getItem("current_user")),
+        recipientId: 0,
         public: true
     })
     
@@ -17,6 +21,7 @@ export const MessageList = () => {
     const [ editMessage, setEditMessage ] = useState({
         message: "",
         userId: parseInt(localStorage.getItem("current_user")),
+        recipientId: 0,
         public: true
     })
 
@@ -39,6 +44,7 @@ export const MessageList = () => {
                 id: editMessage.id,
                 message: editMessage.message,
                 userId: editMessage.userId,
+                recipientId: editMessage.recipientId,
                 public: editMessage.public
             })
             .then(() => {
@@ -54,13 +60,15 @@ export const MessageList = () => {
             sendMessage({
                 message: message.message,
                 userId: message.userId,
+                recipientId: message.recipientId,
                 public: message.public
             })
             .then(() => {
                 setMessage({
                     message: "",
                     userId: parseInt(localStorage.getItem("current_user")),
-                    public: true
+                    recipientId: selectedUser.id ? selectedUser.id : 0,
+                    public: selectedUser.id !== undefined
                 })
                 setIsLoading(false)
             })
@@ -69,7 +77,43 @@ export const MessageList = () => {
 
     useEffect(() => {
         getMessages()
-    }, [])
+        .then(parsedMessages => {
+            if(selectedUser.id){
+                setMessages(parsedMessages.filter(message =>{
+                    return !message.public && ((message.userId === parseInt(localStorage.getItem("current_user")) && message.recipientId === selectedUser.id) || (message.userId === selectedUser.id && message.recipientId === parseInt(localStorage.getItem("current_user"))))
+                }))
+                setMessage({
+                    message: "",
+                    userId: parseInt(localStorage.getItem("current_user")),
+                    recipientId: selectedUser.id,
+                    public: false
+                })
+                setEditMessage({
+                    message: "",
+                    userId: parseInt(localStorage.getItem("current_user")),
+                    recipientId: selectedUser.id,
+                    public: false
+                })
+            }
+            else{
+                setMessages(parsedMessages.filter(message =>{
+                    return message.public
+                }))
+                setMessage({
+                    message: "",
+                    userId: parseInt(localStorage.getItem("current_user")),
+                    recipientId: 0,
+                    public: true
+                })
+                setEditMessage({
+                    message: "",
+                    userId: parseInt(localStorage.getItem("current_user")),
+                    recipientId: 0,
+                    public: true
+                })
+            }
+        })
+    }, [selectedUser, isLoading])
 
     const [ showDisplayOnlyMessage, setShowDisplayOnlyMessage ] = useState(true)    
 
