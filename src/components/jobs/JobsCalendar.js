@@ -10,7 +10,7 @@ export const JobsCalendar = () => {
 
     const { setSelectedJob } = useContext(JobsContext)
 
-    const [ date, setDate ] = useState(new Date((Math.floor((new Date()).getTime() / 86400000) * 86400000) - (19 * 3600000)))
+    const [ date, setDate ] = useState(new Date((Math.round((new Date()).getTime() / 86400000) * 86400000) - (19 * 3600000)))
 
     const calendar = useRef(null)
 

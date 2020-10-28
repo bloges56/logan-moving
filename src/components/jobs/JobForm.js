@@ -50,7 +50,7 @@ export const JobForm = () => {
     const handleControlledInputChangeJob = event => {
         const newJob = { ...job }
         if(event.target.name === "date"){
-            newJob.date = (Math.ceil((new Date(event.target.value)).getTime() / 86400000) * 86400000) - (19 * 3600000) + 86400000
+            newJob.date = (Math.round((new Date(event.target.value)).getTime() / 86400000) * 86400000) - (19 * 3600000) + 86400000
             debugger;
         }
         else{
