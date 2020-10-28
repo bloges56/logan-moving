@@ -6,10 +6,11 @@ export const JobsProvider = props => {
 
     //set state for jobs
     const [ jobs, setJobs ] = useState([])
+    const [selectedJob, setSelectedJob ] = useState([])
 
     //get all the jobs from the database
     const getJobs = (date) => {
-        return fetch(`http://localhost:8088/jobs?date=${date}`)
+        return fetch(`http://localhost:8088/jobs?date=${date}&_embed=locations&_expand=client`)
         .then(res => res.json())
         .then(setJobs)
     }
@@ -29,6 +30,7 @@ export const JobsProvider = props => {
     const getJobById = id => {
         return fetch(`http://localhost:8088/jobs/${id}?_embed=locations&_expand=client`)
         .then(res => res.json())
+        .then(setSelectedJob)
     }
 
     const removeJob = id => {
@@ -36,6 +38,7 @@ export const JobsProvider = props => {
             method: "DELETE"
         })
             .then(getJobs)
+            .then(setSelectedJob({}))
     }
 
     const editJob = job => {
@@ -51,7 +54,7 @@ export const JobsProvider = props => {
     //return the functions through JobsContext
     return (
         <JobsContext.Provider value = {{
-            jobs, getJobs, addJob, getJobById, removeJob, editJob
+            jobs, getJobs, addJob, getJobById, removeJob, editJob, selectedJob, setSelectedJob
         }}>
             {props.children}
         </JobsContext.Provider>

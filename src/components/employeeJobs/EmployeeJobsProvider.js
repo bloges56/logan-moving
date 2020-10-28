@@ -19,8 +19,9 @@ export const EmployeeJobsProvider = props => {
 
     //get an employee job by an id
     const getEmployeeJobsByJobId = jobId => {
-        return fetch(`http://localhost:8088/employeeJobs?jobId=${jobId}`)
+        return fetch(`http://localhost:8088/employeeJobs?jobId=${jobId}&_expand=employee`)
         .then(res => res.json())
+        .then(setAssigned)
     }
 
     //add an employeeJob
