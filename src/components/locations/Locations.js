@@ -10,14 +10,18 @@ export const Locations = () => {
     const { getForecast, getWeatherByZip } = useContext(WeatherContext)
     const { selectedJob } = useContext(JobsContext)
 
-    const [ moveInForecast, setMoveInForecast ] = useState({})
-    const [ moveOutForecast, setMoveOutForecast ] = useState({})
+    const  moveIn  = selectedJob.locations.find(location => {
+        return location.moveIn
+    })
+    const moveOut = selectedJob.locations.find(location => {
+        return !location.moveIn
+    })
 
     const [ moveInWeather, setMoveInWeather ] = useState({})
     const [ moveOutWeather, setMoveOutWeather ] = useState({})
 
     const checkDate = () => {
-        return (selectedJob.date - (new Date().getTime())) < (5 * 86400000) && (selectedJob.date - (new Date().getTime())) >= 0
+        return (selectedJob.date - (new Date().getTime())) <= (5 * 86400000) && (selectedJob.date - (new Date().getTime())) >= 0
     }
 
     const getWeather = (forecast, location) => {
@@ -47,23 +51,23 @@ export const Locations = () => {
 
     useEffect(() => {
         if(checkDate){
-            getForecast(selectedJob.locations[0])
+            getForecast(moveIn)
             .then(forecast => {
-                return getWeather(forecast, selectedJob.locations[0])
+                return getWeather(forecast, moveIn)
             })
             .then(() => {
-                getForecast(selectedJob.locations[1])
+                getForecast(moveOut)
                 .then(forecast => {
-                    return getWeather(forecast, selectedJob.locations[1])
+                    return getWeather(forecast, moveOut)
                 })
             })
         }
         else{
-            getWeatherByZip(selectedJob.locations[0].zip)
+            getWeatherByZip(moveIn.zip)
             .then(setMoveInWeather)
             .then(() => {
-                getWeatherByZip(selectedJob.locations[1].zip)
-                .then(setMoveInWeather)
+                getWeatherByZip(moveOut.zip)
+                .then(setMoveOutWeather)
             })
         }
     }, [])
@@ -84,19 +88,16 @@ export const Locations = () => {
                 <Col>
                     <h4>Zip:</h4>
                 </Col>
-                <Col>
-                    <h4>Temp:</h4>
-                </Col>
             </Row>
             <Row>
                 <Col>
-                    <h4>{selectedJob?.locations[0].street}</h4>
+                    <h4>{moveIn.street}</h4>
                 </Col>
                 <Col>
-                    <h4>{selectedJob?.locations[0].state}</h4>
+                    <h4>{moveIn.state}</h4>
                 </Col>
                 <Col>
-                    <h4>{selectedJob?.locations[0].zip}</h4>
+                    <h4>{moveIn.zip}</h4>
                 </Col>
                 <Col>
                 {checkDate() ? <h3>Move Day Temp:</h3> : <h3>Current Temp:</h3>}
@@ -116,19 +117,16 @@ export const Locations = () => {
                 <Col>
                     <h4>Zip</h4>
                 </Col>
-                <Col>
-                    <h4>Temp:</h4>
-                </Col>
             </Row>
             <Row>
                 <Col>
-                    <h4>{selectedJob?.locations[1].street}</h4>
+                    <h4>{moveOut.street}</h4>
                 </Col>
                 <Col>
-                    <h4>{selectedJob?.locations[1].state}</h4>
+                    <h4>{moveOut.state}</h4>
                 </Col>
                 <Col>
-                    <h4>{selectedJob?.locations[1].zip}</h4>
+                    <h4>{moveOut.zip}</h4>
                 </Col>
                 <Col>
                 {checkDate() ? <h3>Move Day Temp:</h3> : <h3>Current Temp:</h3>}
