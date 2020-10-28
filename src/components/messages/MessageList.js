@@ -11,7 +11,7 @@ export const MessageList = () => {
 
     const [ message, setMessage ] = useState({
         message: "",
-        userId: parseInt(localStorage.getItem("current_user")),
+        userId: parseInt(sessionStorage.getItem("current_user")),
         recipientId: 0,
         public: true
     })
@@ -20,7 +20,7 @@ export const MessageList = () => {
 
     const [ editMessage, setEditMessage ] = useState({
         message: "",
-        userId: parseInt(localStorage.getItem("current_user")),
+        userId: parseInt(sessionStorage.getItem("current_user")),
         recipientId: 0,
         public: true
     })
@@ -50,6 +50,7 @@ export const MessageList = () => {
             .then(() => {
                 setShowDisplayOnlyMessage(true)
                 setIsLoading(false)
+                setSelectedUser(selectedUser)
             })
         }
     }
@@ -66,31 +67,61 @@ export const MessageList = () => {
             .then(() => {
                 setMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: selectedUser.id ? selectedUser.id : 0,
                     public: selectedUser.id !== undefined
                 })
                 setIsLoading(false)
+                setSelectedUser(selectedUser)
             })
         }   
     }
+
+    const [ update, setUpdate ] = useState("")
+
+    async function getUpdate() {
+        let response = await fetch("http://localhost:8088/messages")
+
+        if (response.status == 502) {
+            // Status 502 is a connection timeout error,
+            // may happen when the connection was pending for too long,
+            // and the remote server or a proxy closed it
+            // let's reconnect
+            await getUpdate();
+          } else if (response.status != 200) {
+            // An error - let's show it
+            // showMessage(response.statusText);
+            // Reconnect in one second
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await getUpdate();
+          } else {
+            // Get and show the message
+            let message = await response.text();
+            setUpdate(message);
+            // Call subscribe() again to get the next message
+            await getUpdate();
+          }
+    }
+
+    getUpdate()
+
 
     useEffect(() => {
         getMessages()
         .then(parsedMessages => {
             if(selectedUser.id){
                 setMessages(parsedMessages.filter(message =>{
-                    return !message.public && ((message.userId === parseInt(localStorage.getItem("current_user")) && message.recipientId === selectedUser.id) || (message.userId === selectedUser.id && message.recipientId === parseInt(localStorage.getItem("current_user"))))
+                    return !message.public && ((message.userId === parseInt(sessionStorage.getItem("current_user")) && message.recipientId === selectedUser.id) || (message.userId === selectedUser.id && message.recipientId === parseInt(sessionStorage.getItem("current_user"))))
                 }))
                 setMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: selectedUser.id,
                     public: false
                 })
                 setEditMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: selectedUser.id,
                     public: false
                 })
@@ -101,19 +132,19 @@ export const MessageList = () => {
                 }))
                 setMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: 0,
                     public: true
                 })
                 setEditMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: 0,
                     public: true
                 })
             }
         })
-    }, [selectedUser, isLoading])
+    }, [selectedUser, isLoading, update])
 
     const [ showDisplayOnlyMessage, setShowDisplayOnlyMessage ] = useState(true)    
 
@@ -148,7 +179,7 @@ export const MessageList = () => {
                                 }}>Edit</Button></InputGroupAddon>
                             </InputGroup>
                         }
-                        {message.userId === parseInt(localStorage.getItem("current_user")) &&
+                        {message.userId === parseInt(sessionStorage.getItem("current_user")) &&
                             <>
                                 {showDisplayOnlyMessage || message.id !== editMessage.id ? <EditButton message={message}/> : <></>}
                                 <Button color="danger" disabled={isLoading} onClick={event => {

@@ -9,7 +9,7 @@ import { SearchProvider } from "./search/SearchProvider"
 export const LoganMoving = () => (
     <>
         <Route render={() => {
-            if (localStorage.getItem("current_user")) {
+            if (sessionStorage.getItem("current_user")) {
                 return (
                     <>
                         <SearchProvider>

@@ -37,7 +37,7 @@ export const Login = props => {
         existingUserCheck()
             .then(exists => {
                 if (exists && exists.email === email.current.value) {
-                    localStorage.setItem("current_user", exists.id)
+                    sessionStorage.setItem("current_user", exists.id)
                     history.push("/")
                 }else if (exists && exists.email !== email.current.value) {
                     toggleEmailModal()
