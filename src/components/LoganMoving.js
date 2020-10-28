@@ -4,6 +4,7 @@ import { ApplicationViews } from "./ApplicationViews"
 import { Login } from "./auth/Login"
 import { Register } from "./auth/Register"
 import { NavBar } from "./nav/NavBar"
+import { SearchProvider } from "./search/SearchProvider"
 
 export const LoganMoving = () => (
     <>
@@ -11,7 +12,10 @@ export const LoganMoving = () => (
             if (localStorage.getItem("current_user")) {
                 return (
                     <>
-                        <NavBar />
+                        <SearchProvider>
+                            <NavBar />
+                        </SearchProvider>
+                        
                         <ApplicationViews />  
                     </>
                 )
