@@ -38,9 +38,14 @@ export const ApplicationViews = props => {
                         </Route>
                     </EmployeesProvider>
 
-                    <Route exact path="/jobs">
-                        <JobsCalendar />
-                    </Route>
+
+                    <WeatherProvider>
+                        <LocationsProvider>
+                        <Route exact path="/jobs">
+                            <JobsCalendar />
+                        </Route>
+                        </LocationsProvider>
+                    </WeatherProvider>
 
                 </EmployeeJobsProvider>
             

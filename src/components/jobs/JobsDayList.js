@@ -7,9 +7,7 @@ import { Link } from "react-router-dom"
 //component that lists out all the jobs of a given date
 export const JobsDayList = ({date}) => {
     //grab jobs and getJobs from JobsContext
-    const { jobs, getJobs } = useContext(JobsContext)
-
-    const [selectedJobId, setSelectedJobId ] = useState(0)
+    const { jobs, getJobs, setSelectedJob, selectedJob } = useContext(JobsContext)
 
     //get jobs on render and when the date is selected
     useEffect(() => {
@@ -17,6 +15,7 @@ export const JobsDayList = ({date}) => {
     }, [date])
 
     
+
     return (
         <>
         {jobs.length !== 0 &&
@@ -25,15 +24,15 @@ export const JobsDayList = ({date}) => {
                 jobs.map(job => {
                 return <Button key={job.id} onClick={e =>{
                     e.preventDefault()
-                    setSelectedJobId(job.id)
+                    setSelectedJob(job)
                 }}>{job.title}</Button>
                 })
             }
         </Col>
         }
         <Col xs="6">
-            {selectedJobId !== 0 && 
-                <JobDetail setJobId={setSelectedJobId} jobId={selectedJobId}/>
+            {selectedJob.title && 
+                <JobDetail />
             }
         </Col>
         </>
