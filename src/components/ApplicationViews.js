@@ -16,6 +16,7 @@ import { EmployeeForm } from "./employees/EmployeeForm"
 import { MessagesProvider } from "./messages/MessagesProvider"
 import { Messages } from "./messages/Messages"
 import { WeatherProvider } from "./weather/WeatherProvider"
+import { UsersProvider } from "./users/UsersProvider"
 
 export const ApplicationViews = props => {
     return (
@@ -96,9 +97,12 @@ export const ApplicationViews = props => {
             </EmployeesProvider>
 
             <MessagesProvider>
-                <Route exact path = "/messages">
-                    <Messages />
-                </Route>
+
+                <UsersProvider>
+                    <Route exact path = "/messages">
+                        <Messages />
+                    </Route>
+                </UsersProvider>
             </MessagesProvider>
 
         </>

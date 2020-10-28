@@ -9,7 +9,6 @@ export const MessagesProvider = props => {
     const getMessages = () => {
         return fetch("http://localhost:8088/messages?_expand=user")
         .then(res => res.json())
-        .then(setMessages)
     }
 
     const sendMessage = message => {
@@ -43,7 +42,7 @@ export const MessagesProvider = props => {
 
     return (
         <MessagesContext.Provider value={{
-            messages, getMessages, sendMessage, deleteMessage, changeMessage
+            messages, getMessages, sendMessage, deleteMessage, changeMessage, setMessages
         }}>
             {props.children}
         </MessagesContext.Provider>
