@@ -5,7 +5,7 @@ import { EmployeeJobsContext } from "../employeeJobs/EmployeeJobsProvider"
 import { Container, Row, Col, Button } from "reactstrap"
 import { Locations } from "../locations/Locations"
 
-export const JobDetail = ({jobId, setJobId}) => {
+export const JobDetail = () => {
 
      //format the given date
      function formatDate(date) {
@@ -71,11 +71,11 @@ export const JobDetail = ({jobId, setJobId}) => {
             }
             <Row>
                 <Col>
-                    <Link to={`/jobs/edit/${jobId}`}>Edit</Link>
+                    <Link to={`/jobs/edit/${selectedJob.id}`}>Edit</Link>
                 </Col>
                 <Col>
                     <Button color="danger" onClick={() => {
-                        removeJob(jobId)
+                        removeJob(selectedJob.id)
                     }}>
                         Remove job
                     </Button>
