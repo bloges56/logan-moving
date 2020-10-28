@@ -24,7 +24,7 @@ export const Locations = () => {
         return (selectedJob.date - (new Date().getTime())) <= (5 * 86400000) && (selectedJob.date - (new Date().getTime())) >= 0
     }
 
-    const getWeather = (forecast, location) => {
+    const getWeather = (forecast, moveCheck) => {
         const found = forecast.list[0]
         
         forecast.list.forEach(timestamp => {
@@ -33,7 +33,7 @@ export const Locations = () => {
             }
         })
 
-        if(location.moveIn){
+        if(moveCheck){
             setMoveInWeather(found)
         }
         else{
@@ -53,12 +53,12 @@ export const Locations = () => {
         if(checkDate){
             getForecast(moveIn)
             .then(forecast => {
-                return getWeather(forecast, moveIn)
+                return getWeather(forecast, true)
             })
             .then(() => {
                 getForecast(moveOut)
                 .then(forecast => {
-                    return getWeather(forecast, moveOut)
+                    return getWeather(forecast, false)
                 })
             })
         }
@@ -70,7 +70,7 @@ export const Locations = () => {
                 .then(setMoveOutWeather)
             })
         }
-    }, [])
+    }, [selectedJob])
 
 
     return (
