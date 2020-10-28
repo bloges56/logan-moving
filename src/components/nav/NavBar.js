@@ -10,7 +10,6 @@ export const NavBar = () => {
     const term = useRef("")
 
     const onSubmit = event => {
-        debugger;
         event.preventDefault()
         history.push(`/search?term=${term.current.value}`)
     }
