@@ -17,11 +17,18 @@ import { MessagesProvider } from "./messages/MessagesProvider"
 import { Messages } from "./messages/Messages"
 import { WeatherProvider } from "./weather/WeatherProvider"
 import { UsersProvider } from "./users/UsersProvider"
+import { SearchProvider } from "./search/SearchProvider"
+import { SearchList } from "./search/SearchList"
 
 export const ApplicationViews = props => {
     return (
         <>
 
+            <SearchProvider>
+                <Route exact path="/search">
+                    <SearchList />
+                </Route>
+            </SearchProvider>
 
             <WeatherProvider>
                 <Route exact path="/">
