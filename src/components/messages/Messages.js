@@ -3,7 +3,7 @@ import { MessageList } from "./MessageList"
 import { UserList } from "../users/UserList"
 import { Container, Row, Col } from "reactstrap"
 
-export const Messages = () => {
+export const Messages = ({update}) => {
 
 
     return (
@@ -20,7 +20,7 @@ export const Messages = () => {
                     <UserList />
                 </Col>
                 <Col xs="4">
-                    <MessageList />
+                    <MessageList update={update}/>
                 </Col>
             </Row>
         </Container>

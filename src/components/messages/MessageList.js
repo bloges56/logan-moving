@@ -3,11 +3,12 @@ import { MessagesContext } from "./MessagesProvider"
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, InputGroup, InputGroupAddon, Input, Button } from "reactstrap"
 import { UsersContext } from "../users/UsersProvider"
 
-export const MessageList = () => {
+export const MessageList = ({update}) => {
 
     const { messages, getMessages, sendMessage, deleteMessage, changeMessage, setMessages } = useContext(MessagesContext)
 
-    const { selectedUser, setSelectedUser } = useContext(UsersContext)
+    const { selectedUser } = useContext(UsersContext)
+
 
     const [ message, setMessage ] = useState({
         message: "",
@@ -75,31 +76,53 @@ export const MessageList = () => {
         }   
     }
 
-    const [ update, setUpdate ] = useState("")
+    // const [ realTime, setRealTime] = useState(true)
 
-    async function getUpdate() {
-        let response = await fetch("http://localhost:8088/messages")
 
-        if (response.status == 502) {
+    // const getRealTime = async () => {
+    //     if(window.location.href === "http://localhost:3000/messages"){
+    //         return true
+    //     }
+    //     debugger;
+    //     return false
+    // }
+
+    // const [ update, setUpdate ] = useState("")
+
+    // const getUpdate = async () => {
+    //     let response = await fetch("http://localhost:8088/messages")
+
+    //     if (response.status == 502) {
             
-            await getUpdate();
+    //         await getUpdate();
 
-          } else if (response.status != 200) {
+    //     } else if (response.status != 200) {
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            await getUpdate();
+    //         await new Promise(resolve => setTimeout(resolve, 1000));
+    //         await getUpdate();
 
-          } else {
-            
-            let message = await response.text();
-            setUpdate(message);
-            
-            await getUpdate();
-          }
-    }
+    //     } else {
+    //         let message = await response.text();
+    //         return message
+    //       } 
+    // }
 
-    getUpdate()
+    // const longPoll = async () => {
 
+    //     // if(!realTime){
+    //     //     return
+    //     // }
+
+    //     const realTime =  await getRealTime()
+    //     if(realTime){
+    //         const message = await getUpdate()
+    //         setUpdate(message)
+    //         longPoll()
+    //     }
+        
+    // }
+
+    // longPoll()
 
     useEffect(() => {
         getMessages()

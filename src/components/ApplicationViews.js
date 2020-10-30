@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import { Route } from "react-router-dom"
 import { Home } from "./Home"
 import { JobsCalendar } from "./jobs/JobsCalendar"
@@ -20,7 +20,53 @@ import { UsersProvider } from "./users/UsersProvider"
 import { SearchProvider } from "./search/SearchProvider"
 import { SearchList } from "./search/SearchList"
 
-export const ApplicationViews = props => {
+
+export const ApplicationViews = () => {
+
+    const getRealTime = async () => {
+        if(window.location.href === "http://localhost:3000/messages"){
+            return true
+        }
+        return false
+    }
+
+    const [ update, setUpdate ] = useState("")
+
+    const getUpdate = async () => {
+        let response = await fetch("http://localhost:8088/messages")
+
+        if (response.status == 502) {
+            
+            await getUpdate();
+
+        } else if (response.status != 200) {
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await getUpdate();
+
+        } else {
+            let message = await response.text();
+            return message
+          } 
+    }
+
+    const longPoll = async () => {
+
+        // if(!realTime){
+        //     return
+        // }
+
+        const realTime =  await getRealTime()
+        if(realTime){
+            const message = await getUpdate()
+            setUpdate(message)
+            longPoll()
+        }
+        
+    }
+
+    longPoll()
+
     return (
         <>
 
@@ -107,7 +153,7 @@ export const ApplicationViews = props => {
 
                 <UsersProvider>
                     <Route exact path = "/messages">
-                        <Messages />
+                        <Messages update={update}/>
                     </Route>
                 </UsersProvider>
             </MessagesProvider>
