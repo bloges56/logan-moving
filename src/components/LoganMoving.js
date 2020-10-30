@@ -6,29 +6,32 @@ import { Register } from "./auth/Register"
 import { NavBar } from "./nav/NavBar"
 import { SearchProvider } from "./search/SearchProvider"
 
-export const LoganMoving = () => (
-    <>
-        <Route render={() => {
-            if (localStorage.getItem("current_user")) {
-                return (
-                    <>
-                        <SearchProvider>
-                            <NavBar />
-                        </SearchProvider>
-                        
-                        <ApplicationViews />  
-                    </>
-                )
-            } else {
-                return <Redirect to="/login" />
-            }
-        }} />
+export const LoganMoving = () =>{
 
-        <Route path="/login">
-			<Login />
-        </Route>
-        <Route path="/register">
-			<Register />
-        </Route>
-    </>
-)
+    return (
+        <>
+            <Route render={() => {
+                if (sessionStorage.getItem("current_user")) {
+                    return (
+                        <>
+                            <SearchProvider>
+                                <NavBar />
+                            </SearchProvider>
+
+                            <ApplicationViews /> 
+                        </>
+                    )
+                } else {
+                    return <Redirect to="/login" />
+                }
+            }} />
+
+            <Route path="/login">
+                <Login />
+            </Route>
+            <Route path="/register">
+                <Register />
+            </Route>
+        </>
+    )
+}

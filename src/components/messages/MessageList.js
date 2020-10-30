@@ -3,15 +3,16 @@ import { MessagesContext } from "./MessagesProvider"
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, InputGroup, InputGroupAddon, Input, Button } from "reactstrap"
 import { UsersContext } from "../users/UsersProvider"
 
-export const MessageList = () => {
+export const MessageList = ({update}) => {
 
     const { messages, getMessages, sendMessage, deleteMessage, changeMessage, setMessages } = useContext(MessagesContext)
 
-    const { selectedUser, setSelectedUser } = useContext(UsersContext)
+    const { selectedUser } = useContext(UsersContext)
+
 
     const [ message, setMessage ] = useState({
         message: "",
-        userId: parseInt(localStorage.getItem("current_user")),
+        userId: parseInt(sessionStorage.getItem("current_user")),
         recipientId: 0,
         public: true
     })
@@ -20,7 +21,7 @@ export const MessageList = () => {
 
     const [ editMessage, setEditMessage ] = useState({
         message: "",
-        userId: parseInt(localStorage.getItem("current_user")),
+        userId: parseInt(sessionStorage.getItem("current_user")),
         recipientId: 0,
         public: true
     })
@@ -66,7 +67,7 @@ export const MessageList = () => {
             .then(() => {
                 setMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: selectedUser.id ? selectedUser.id : 0,
                     public: selectedUser.id !== undefined
                 })
@@ -75,22 +76,70 @@ export const MessageList = () => {
         }   
     }
 
+    // const [ realTime, setRealTime] = useState(true)
+
+
+    // const getRealTime = async () => {
+    //     if(window.location.href === "http://localhost:3000/messages"){
+    //         return true
+    //     }
+    //     debugger;
+    //     return false
+    // }
+
+    // const [ update, setUpdate ] = useState("")
+
+    // const getUpdate = async () => {
+    //     let response = await fetch("http://localhost:8088/messages")
+
+    //     if (response.status == 502) {
+            
+    //         await getUpdate();
+
+    //     } else if (response.status != 200) {
+
+    //         await new Promise(resolve => setTimeout(resolve, 1000));
+    //         await getUpdate();
+
+    //     } else {
+    //         let message = await response.text();
+    //         return message
+    //       } 
+    // }
+
+    // const longPoll = async () => {
+
+    //     // if(!realTime){
+    //     //     return
+    //     // }
+
+    //     const realTime =  await getRealTime()
+    //     if(realTime){
+    //         const message = await getUpdate()
+    //         setUpdate(message)
+    //         longPoll()
+    //     }
+        
+    // }
+
+    // longPoll()
+
     useEffect(() => {
         getMessages()
         .then(parsedMessages => {
             if(selectedUser.id){
                 setMessages(parsedMessages.filter(message =>{
-                    return !message.public && ((message.userId === parseInt(localStorage.getItem("current_user")) && message.recipientId === selectedUser.id) || (message.userId === selectedUser.id && message.recipientId === parseInt(localStorage.getItem("current_user"))))
+                    return !message.public && ((message.userId === parseInt(sessionStorage.getItem("current_user")) && message.recipientId === selectedUser.id) || (message.userId === selectedUser.id && message.recipientId === parseInt(sessionStorage.getItem("current_user"))))
                 }))
                 setMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: selectedUser.id,
                     public: false
                 })
                 setEditMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: selectedUser.id,
                     public: false
                 })
@@ -101,19 +150,19 @@ export const MessageList = () => {
                 }))
                 setMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: 0,
                     public: true
                 })
                 setEditMessage({
                     message: "",
-                    userId: parseInt(localStorage.getItem("current_user")),
+                    userId: parseInt(sessionStorage.getItem("current_user")),
                     recipientId: 0,
                     public: true
                 })
             }
         })
-    }, [selectedUser, isLoading])
+    }, [selectedUser, isLoading, update])
 
     const [ showDisplayOnlyMessage, setShowDisplayOnlyMessage ] = useState(true)    
 
@@ -148,7 +197,7 @@ export const MessageList = () => {
                                 }}>Edit</Button></InputGroupAddon>
                             </InputGroup>
                         }
-                        {message.userId === parseInt(localStorage.getItem("current_user")) &&
+                        {message.userId === parseInt(sessionStorage.getItem("current_user")) &&
                             <>
                                 {showDisplayOnlyMessage || message.id !== editMessage.id ? <EditButton message={message}/> : <></>}
                                 <Button color="danger" disabled={isLoading} onClick={event => {
