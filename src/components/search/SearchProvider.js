@@ -12,7 +12,7 @@ export const SearchProvider = props => {
 
 
     const getSearchedJobs = (term) => {
-        return fetch(`http://localhost:8088/jobs?q=${term}`)
+        return fetch(`http://localhost:8088/jobs?q=${term}&_expand=client&_embed=locations`)
         .then(res => res.json())
         .then(setJobs)
     }

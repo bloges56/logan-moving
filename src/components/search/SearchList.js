@@ -3,12 +3,15 @@ import { SearchContext } from "./SearchProvider"
 import { useLocation, useHistory } from "react-router-dom"
 import { Container, Row, Col, ListGroup, ListGroupItem, Button} from "reactstrap"
 import { EmployeesContext } from "../employees/EmployeesProvider"
+import { JobsContext } from "../jobs/JobsProvider"
 
 export const SearchList = () => {
 
     const { getAllSearch, jobs, employees, clients} = useContext(SearchContext)
 
     const { setSelectedEmployee } = useContext(EmployeesContext)
+
+    const { setSelectedJob } = useContext(JobsContext)
 
     const term = new URLSearchParams(useLocation().search).get("term")
 
@@ -50,7 +53,10 @@ export const SearchList = () => {
                     <h2>Jobs</h2>
                     <ListGroup>
                         {jobs.map(job => {
-                            return <ListGroupItem key={job.id}>{job.title}</ListGroupItem>
+                            return <ListGroupItem key={job.id}><Button onClick={e => {
+                                setSelectedJob(job)
+                                history.push("/jobs")
+                            }}>{job.title}</Button></ListGroupItem>
                         })}
                     </ListGroup>
                 </Col>
