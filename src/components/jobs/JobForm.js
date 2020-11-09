@@ -57,22 +57,17 @@ export const JobForm = () => {
         setMoveOut(newMoveOut)
     }
 
-    const getMoveIn = () => {
-        if(job.id){
-            return job.locations.find(location => {
-                return location.moveIn
-            })
-        }
-        return {}
+    const getMoveIn = (jobInput) => {
+        return jobInput.locations.find(location => {
+            return location.moveIn
+        })
+        
     }
 
-    const getMoveOut = () => {
-        if(job.id){
-            return job.locations.find(location => {
-                return !location.moveIn
-            })
-        }
-        return {}
+    const getMoveOut = (jobInput) => {
+        return jobInput.locations.find(location => {
+            return !location.moveIn
+        })
     }
 
     //get the date passed in the url
@@ -97,7 +92,18 @@ export const JobForm = () => {
         .then(() => {
             if(jobId){
                 getJobById(jobId)
-                .then(setJob)
+                .then(jobRes => {
+                    setJob(jobRes)
+                    return jobRes
+                })
+                .then(jobRes => {
+                    setMoveIn(getMoveIn(jobRes))
+                    return jobRes
+                })
+                .then(jobRes => {
+                    setMoveOut(getMoveOut(jobRes))
+                    return jobRes
+                })
                 .then(() => {
                     setIsLoading(false)
                 })
@@ -120,7 +126,7 @@ export const JobForm = () => {
             })
             .then(() => {
                 return editLocation({
-                    id: getMoveIn().id,
+                    id: moveIn.id,
                     jobId: parseInt(jobId),
                     street: moveIn.street,
                     state: moveIn.state,
@@ -131,7 +137,7 @@ export const JobForm = () => {
             })
             .then(() => {
                 return editLocation({
-                    id: getMoveOut().id,
+                    id: moveOut.id,
                     jobId: parseInt(jobId),
                     street: moveOut.street,
                     state: moveOut.state,
