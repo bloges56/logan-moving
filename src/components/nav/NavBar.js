@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { Navbar, Nav, NavItem, NavLink, Form, InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
 import { LinkContainer } from "react-router-bootstrap"
 
@@ -14,6 +14,8 @@ export const NavBar = () => {
         event.preventDefault()
         history.push(`/search?term=${term.current.value}`)
     }
+
+    
 
     return (
         <Navbar expand="xs">
