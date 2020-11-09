@@ -1,7 +1,8 @@
-import React, { useContext, useRef } from "react"
-import { SearchContext } from "../search/SearchProvider"
+import React, { useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
-import { Navbar, Nav, NavItem, Form, InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
+import { Navbar, Nav, NavItem, NavLink, Form, InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
+import { LinkContainer } from "react-router-bootstrap"
+
 
 export const NavBar = () => {
 
@@ -16,7 +17,7 @@ export const NavBar = () => {
 
     return (
         <Navbar expand="xs">
-            <Nav navbar>
+            <Nav pills>
                 <NavItem>
                     <Form onSubmit={onSubmit}>
                         <InputGroup>
@@ -29,21 +30,36 @@ export const NavBar = () => {
                         </InputGroup>
                     </Form>
                 </NavItem>
+                <LinkContainer to="/">
+                    <NavItem>
+                        <NavLink href="">Home</NavLink>
+                    </NavItem>
+                </LinkContainer>
+               
+               <LinkContainer to="/jobs">
                 <NavItem>
-                    <Link to="/">home</Link>
-                </NavItem>
+                        <NavLink href="">Jobs</NavLink>
+                    </NavItem>
+               </LinkContainer>
+
+               <LinkContainer to="/clients">
                 <NavItem>
-                    <Link to="/jobs">Jobs</Link>
-                </NavItem>
+                        <NavLink href="">Clients</NavLink>
+                    </NavItem>
+               </LinkContainer>
+
+               <LinkContainer to="/employees">
                 <NavItem>
-                    <Link to="/clients">Clients</Link>
-                </NavItem>
+                        <NavLink href="">Employees</NavLink>
+                    </NavItem>
+               </LinkContainer>
+                
+               <LinkContainer to="/messages">
                 <NavItem>
-                    <Link to="/employees">Employees</Link>
-                </NavItem>
-                <NavItem>
-                    <Link to="/messages">Messages</Link>
-                </NavItem>
+                        <NavLink href="">Messages</NavLink>
+                    </NavItem>
+               </LinkContainer>
+
             </Nav>
         </Navbar>
     )

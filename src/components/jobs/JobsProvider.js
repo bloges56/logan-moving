@@ -10,7 +10,6 @@ export const JobsProvider = props => {
 
     //get all the jobs from the database
     const getJobs = (date) => {
-        debugger;
         return fetch(`http://localhost:8088/jobs?date=${date}&_embed=locations&_expand=client`)
         .then(res => res.json())
         .then(setJobs)

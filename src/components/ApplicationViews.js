@@ -46,7 +46,6 @@ export const ApplicationViews = () => {
 
         } else {
             let message = await response.text();
-            debugger;
             return message
           } 
     }
