@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import { ClientsContext } from "./ClientsProvider"
-import { Form, FormGroup, Label, Input, Button } from "reactstrap"
+import { Form, FormGroup, Label, Input, Button, Container, Row, Col } from "reactstrap"
 
 
 export const ClientForm = () => {
@@ -61,28 +61,44 @@ export const ClientForm = () => {
     }
 
     return (
-        <Form>
-            <FormGroup>
-                <Label for="clientFirstName">First Name</Label>
-                <Input type="text" name="firstName" id="clientFirstName" value={client.firstName} onChange={handleControlledInputChange} required></Input>
-            </FormGroup>
-            <FormGroup>
-                <Label for="clientLastName">First Name</Label>
-                <Input type="text" name="lastName" id="clientLastName" value={client.lastName} onChange={handleControlledInputChange} required></Input>
-            </FormGroup>
-            <FormGroup>
-                <Label for="clientEmail">Email</Label>
-                <Input type="email" name="email" id="clientEmail" value={client.email} onChange={handleControlledInputChange} required></Input>
-            </FormGroup>
-            <FormGroup>
-                <Label for="clientPhone">Phone Number</Label>
-                <Input type="number" name="phone" id="clientPhone" value={client.phone} onChange={handleControlledInputChange} required></Input>
-            </FormGroup>
-            <Button onClick={event => {
-                event.preventDefault()
-                constructClient()
+        <Container>
+            <Form>
+                <Row form>
+                    <Col xs="3">
+                        <FormGroup>
+                            <Label for="clientFirstName">First Name</Label>
+                            <Input type="text" name="firstName" id="clientFirstName" value={client.firstName} onChange={handleControlledInputChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                    <Col xs="3">
+                        <FormGroup>
+                            <Label for="clientLastName">Last Name</Label>
+                            <Input type="text" name="lastName" id="clientLastName" value={client.lastName} onChange={handleControlledInputChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="clientEmail">Email</Label>
+                            <Input type="email" name="email" id="clientEmail" value={client.email} onChange={handleControlledInputChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="clientPhone">Phone Number</Label>
+                            <Input type="number" name="phone" id="clientPhone" value={client.phone} onChange={handleControlledInputChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Button onClick={event => {
+                    event.preventDefault()
+                    constructClient()
 
-            }}>{clientId ? "Update" : "Add"}</Button>
-        </Form>
+                }}>{clientId ? "Update" : "Add"}</Button>
+            </Form>
+        </Container>
     )
 }
