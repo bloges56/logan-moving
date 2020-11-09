@@ -4,6 +4,7 @@ import { useLocation, useHistory } from "react-router-dom"
 import { Container, Row, Col, ListGroup, ListGroupItem, Button} from "reactstrap"
 import { EmployeesContext } from "../employees/EmployeesProvider"
 import { JobsContext } from "../jobs/JobsProvider"
+import { ClientsContext } from "../clients/ClientsProvider"
 
 export const SearchList = () => {
 
@@ -12,6 +13,8 @@ export const SearchList = () => {
     const { setSelectedEmployee } = useContext(EmployeesContext)
 
     const { setSelectedJob } = useContext(JobsContext)
+
+    const { setSelectedClient } = useContext(ClientsContext)
 
     const term = new URLSearchParams(useLocation().search).get("term")
 
@@ -68,7 +71,10 @@ export const SearchList = () => {
                     <h2>Clients</h2>
                     <ListGroup>
                         {clients.map(client => {
-                            return <ListGroupItem key={client.id}>{client.firstName + " " + client.lastName}</ListGroupItem>
+                            return <ListGroupItem key={client.id}><Button onClick={e => {
+                                setSelectedClient(client)
+                                history.push("/clients")
+                            }}>{client.firstName + " " + client.lastName}</Button></ListGroupItem>
                         })}
                     </ListGroup>
                 </Col>
