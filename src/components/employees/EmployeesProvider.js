@@ -26,6 +26,8 @@ export const EmployeesProvider = props => {
             },
             body: JSON.stringify(employee)
         })
+        .then(res => res.json())
+        .then(setSelectedEmployee)
     }
 
     const fireEmployee = id => {

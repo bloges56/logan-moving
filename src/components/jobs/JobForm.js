@@ -3,7 +3,7 @@ import { JobsContext } from "./JobsProvider"
 import { ClientsContext } from "../clients/ClientsProvider"
 import { LocationsContext } from "../locations/LocationsProvider"
 import { useHistory, useParams, useLocation } from "react-router-dom"
-import { Button, Form, FormGroup, Label, Input } from "reactstrap"
+import { Button, Form, FormGroup, Label, Input, Row, Col, Container } from "reactstrap"
 
 export const JobForm = () => {
     //get the addJob function from JobsContext
@@ -185,59 +185,135 @@ export const JobForm = () => {
     
 
     return (
-        <>
+        <Container>
             <Form>
-                <FormGroup>
-                    <Label for="job-title">Title: </Label>
-                    <Input className="form-control" type="text" name="title" id="job-title" onChange={handleControlledInputChangeJob} value={job?.title} required/>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="job-date">Date: </Label>
-                    <Input type="date" name="date" id="job-date" value={job?.date} onChange={handleControlledInputChangeJob}/>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="job-client">Select Client</Label>
-                    <Input type="select" name="clientId" id="job-client" onChange={handleControlledInputChangeJob} value={job?.clientId} required>
-                        <option value="0">Select a client</option>
-                        {clients.map(client => (
-                            <option key={client.id} value={client.id}>
-                                {client.firstName + " " + client.lastName}
-                            </option>
-                        ))}
-                    </Input>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="job-move-in-street">Move-In Location Street</Label>
-                    <Input type="text" name="street" id="job-move-in-street" onChange={handleControlledInputChangeMoveIn} value={moveIn?.street} required></Input>
-                    <Label for="job-move-in-state">Move-In Location State</Label>
-                    <Input type="text" name="state" id="job-move-in-state" onChange={handleControlledInputChangeMoveIn} value={moveIn?.state} required></Input>
-                    <Label for="job-move-in-zip">Move-In Location Zip</Label>
-                    <Input type="text" name="zip" id="job-move-in-zip" onChange={handleControlledInputChangeMoveIn} value={moveIn?.zip} required></Input>
-                    <Label for="job-move-in-desc">Move-In Location Description</Label>
-                    <Input type="textarea" name="description" id="job-move-in-desc" onChange={handleControlledInputChangeMoveIn} value={moveIn?.description} required></Input>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="job-move-out-street">Move-Out Location Street</Label>
-                    <Input type="text" name="street" id="job-move-out-street" onChange={handleControlledInputChangeMoveOut} value={moveOut?.street} required></Input>
-                    <Label for="job-move-out-state">Move-Out Location State</Label>
-                    <Input type="text" name="state" id="job-move-out-state" onChange={handleControlledInputChangeMoveOut} value={moveOut?.state} required></Input>
-                    <Label for="job-move-out-zip">Move-Out Location Zip</Label>
-                    <Input type="text" name="zip" id="job-move-out-zip" onChange={handleControlledInputChangeMoveOut} value={moveOut?.zip} required></Input>
-                    <Label for="job-move-out-desc">Move-Out Location Description</Label>
-                    <Input type="textarea" name="description" id="job-move-out-desc" onChange={handleControlledInputChangeMoveOut} value={moveOut?.description} required></Input>
-                </FormGroup>
-                <FormGroup>
-                    <Button 
-                        disabled={isLoading}
-                        onClick={event => {
-                            event.preventDefault()
-                            constructJobAndLocationsObjects()
-                    }}>
-                        {jobId ? "Update Job" : "Add Job"}
-                    </Button>
-                </FormGroup>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="job-title">Title: </Label>
+                            <Input className="form-control" type="text" name="title" id="job-title" onChange={handleControlledInputChangeJob} value={job?.title} required/>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="job-date">Date: </Label>
+                            <Input type="date" name="date" id="job-date" value={job?.date} onChange={handleControlledInputChangeJob}/>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="job-client">Select Client</Label>
+                            <Input type="select" name="clientId" id="job-client" onChange={handleControlledInputChangeJob} value={job?.clientId} required>
+                                <option value="0">Select a client</option>
+                                {clients.map(client => (
+                                    <option key={client.id} value={client.id}>
+                                        {client.firstName + " " + client.lastName}
+                                    </option>
+                                ))}
+                            </Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row form>
+                    <Col xs="6">
+                        <Row form>
+                            <Col>
+                                <h3>Move-In Location</h3>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col xs="8">
+                                <FormGroup>
+                                    <Label for="job-move-in-street">Street</Label>
+                                    <Input type="text" name="street" id="job-move-in-street" onChange={handleControlledInputChangeMoveIn} value={moveIn?.street} required></Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col xs="2">
+                                <FormGroup>
+                                    <Label for="job-move-in-state">State</Label>
+                                    <Input type="text" name="state" id="job-move-in-state" onChange={handleControlledInputChangeMoveIn} value={moveIn?.state} required></Input>
+                                </FormGroup>
+                            </Col>
+                            <Col xs="3">
+                                <FormGroup>
+                                    <Label for="job-move-in-zip">Zip</Label>
+                                    <Input type="text" name="zip" id="job-move-in-zip" onChange={handleControlledInputChangeMoveIn} value={moveIn?.zip} required></Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col>
+                                <FormGroup>
+                                    <Label for="job-move-in-desc">Description</Label>
+                                    <Input type="textarea" name="description" id="job-move-in-desc" onChange={handleControlledInputChangeMoveIn} value={moveIn?.description} required></Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    <Col xs="6">
+                        <Row form>
+                            <Col>
+                                <h3>Move-Out Location</h3>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col xs="8">
+                                <FormGroup>
+                                    <Label for="job-move-out-street">Street</Label>
+                                    <Input type="text" name="street" id="job-move-out-street" onChange={handleControlledInputChangeMoveOut} value={moveOut?.street} required></Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col xs="2">
+                                <FormGroup>
+                                    <Label for="job-move-out-state">State</Label>
+                                    <Input type="text" name="state" id="job-move-out-state" onChange={handleControlledInputChangeMoveOut} value={moveOut?.state} required></Input>
+                                </FormGroup>
+                            </Col>
+                            <Col xs="3">
+                                <FormGroup>
+                                    <Label for="job-move-out-zip">Zip</Label>
+                                    <Input type="text" name="zip" id="job-move-out-zip" onChange={handleControlledInputChangeMoveOut} value={moveOut?.zip} required></Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col >
+                                <FormGroup>
+                                    <Label for="job-move-out-desc">Description</Label>
+                                    <Input type="textarea" name="description" id="job-move-out-desc" onChange={handleControlledInputChangeMoveOut} value={moveOut?.description} required></Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </Col>
+                    
+                </Row>
+                
+                <Row form>
+                    <Col>
+                        <FormGroup>
+                            <Button 
+                                color="success"
+                                disabled={isLoading}
+                                onClick={event => {
+                                    event.preventDefault()
+                                    constructJobAndLocationsObjects()
+                            }}>
+                                {jobId ? "Update Job" : "Add Job"}
+                            </Button>
+                        </FormGroup>      
+                    </Col>
+                </Row>
             </Form>
-        </>
+        </Container>
     )
 
 }
