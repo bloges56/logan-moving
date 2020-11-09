@@ -66,84 +66,80 @@ export const ApplicationViews = () => {
     return (
         <>
 
-            <SearchProvider>
-                <Route exact path="/search">
-                    <SearchList />
-                </Route>
-            </SearchProvider>
+            <EmployeesProvider>
+                <ClientsProvider>
+                    <JobsProvider>
+                        <SearchProvider>
+                            <Route exact path="/search">
+                                <SearchList />
+                            </Route>
+                        </SearchProvider>
 
+
+                        <EmployeeJobsProvider>
+
+                            <EmployeesProvider>
+                                <Route exact path="/jobs/addEmployeesToJob/:jobId(\d+)">
+                                    <AddEmployeesToJob />
+                                </Route>
+                            </EmployeesProvider>
+
+
+                            <WeatherProvider>
+                                <LocationsProvider>
+                                <Route exact path="/jobs">
+                                    <JobsCalendar />
+                                </Route>
+                                </LocationsProvider>
+                            </WeatherProvider>
+
+                        </EmployeeJobsProvider>
+                    
+                        <LocationsProvider>
+                            <ClientsProvider>
+                                <Route exact path="/jobs/form" >
+                                    <JobForm />
+                                </Route>
+
+                                <Route exact path = "/jobs/edit/:jobId(\d+)">
+                                    <JobForm />
+                                </Route>
+                            </ClientsProvider>
+                        </LocationsProvider>
+
+                        <Route exact path="/clients">
+                            <Clients />
+                        </Route>
+
+                        <Route exact path ="/clients/form">
+                            <ClientForm />
+                        </Route>
+
+                        <Route exact path = "/clients/edit/:clientId(\d+)">
+                            <ClientForm />
+                        </Route>
+
+                        <Route exact path = "/employees">
+                            <Employees />
+                        </Route>
+
+                        <Route exact path = "/employees/form">
+                            <EmployeeForm />
+                        </Route>
+
+                        <Route exact path = "/employees/edit/:employeeId(\d+)">
+                            <EmployeeForm />
+                        </Route>
+
+                    </JobsProvider>
+                </ClientsProvider>
+            </EmployeesProvider>
+            
             <WeatherProvider>
                 <Route exact path="/">
                     <Home />
                 </Route>
             </WeatherProvider>
-
-            <JobsProvider>
-
-                <EmployeeJobsProvider>
-
-                    <EmployeesProvider>
-                        <Route exact path="/jobs/addEmployeesToJob/:jobId(\d+)">
-                            <AddEmployeesToJob />
-                        </Route>
-                    </EmployeesProvider>
-
-
-                    <WeatherProvider>
-                        <LocationsProvider>
-                        <Route exact path="/jobs">
-                            <JobsCalendar />
-                        </Route>
-                        </LocationsProvider>
-                    </WeatherProvider>
-
-                </EmployeeJobsProvider>
-            
-                <LocationsProvider>
-                    <ClientsProvider>
-                        <Route exact path="/jobs/form" >
-                            <JobForm />
-                        </Route>
-
-                        <Route exact path = "/jobs/edit/:jobId(\d+)">
-                            <JobForm />
-                        </Route>
-                    </ClientsProvider>
-                </LocationsProvider>
-               
-            </JobsProvider>
-
-            <ClientsProvider>
-                <Route exact path="/clients">
-                    <Clients />
-                </Route>
-
-                <Route exact path ="/clients/form">
-                    <ClientForm />
-                </Route>
-
-                <Route exact path = "/clients/edit/:clientId(\d+)">
-                    <ClientForm />
-                </Route>
-                
-
-            </ClientsProvider>
-
-            <EmployeesProvider>
-
-                <Route exact path = "/employees">
-                    <Employees />
-                </Route>
-
-                <Route exact path = "/employees/form">
-                    <EmployeeForm />
-                </Route>
-
-                <Route exact path = "/employees/edit/:employeeId(\d+)">
-                    <EmployeeForm />
-                </Route>
-
-            </EmployeesProvider>
 
             <MessagesProvider>
 

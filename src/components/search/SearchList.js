@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect } from "react"
 import { SearchContext } from "./SearchProvider"
-import { useLocation } from "react-router-dom"
-import { Container, Row, Col, ListGroup, ListGroupItem} from "reactstrap"
+import { useLocation, useHistory } from "react-router-dom"
+import { Container, Row, Col, ListGroup, ListGroupItem, Button} from "reactstrap"
+import { EmployeesContext } from "../employees/EmployeesProvider"
 
 export const SearchList = () => {
 
     const { getAllSearch, jobs, employees, clients} = useContext(SearchContext)
 
-    
+    const { setSelectedEmployee } = useContext(EmployeesContext)
 
     const term = new URLSearchParams(useLocation().search).get("term")
 
@@ -16,6 +17,8 @@ export const SearchList = () => {
             getAllSearch(term)
         }
     }, [term])
+
+    const history = useHistory()
 
     return (
         <Container>
@@ -30,7 +33,12 @@ export const SearchList = () => {
                     <h2>Employees</h2>
                     <ListGroup>
                         {employees.map(employee => {
-                            return <ListGroupItem key={employee.id}>{employee.firstName + " " + employee.lastName}</ListGroupItem>
+                            return <ListGroupItem key={employee.id}>
+                                <Button onClick={e => {
+                                    setSelectedEmployee(employee)
+                                    history.push("/employees")
+                                }}>{employee.firstName + " " + employee.lastName}</Button>
+                            </ListGroupItem>
                         })}
                     </ListGroup>
                 </Col>
