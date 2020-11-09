@@ -47,7 +47,7 @@ export const Locations = () => {
     const Weather = ({weather}) => {
         return (
             <>
-                <h3>{weather.main.temp}&#730;F</h3>
+                {weather.main.temp}&#730;F
             </>
         )
     }
@@ -79,34 +79,30 @@ export const Locations = () => {
 
 
     return (
-        <Container>
-        <Row>
+        <Container className="themed-container">
+            <Row>
                 <h3>Move-In Address</h3>
             </Row>
             <Row>
                 <Col>
-                    <h4>Street:</h4>
+                    <h4>Street: {getMoveIn()?.street}</h4>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs="3">
+                    <h4>State: {getMoveIn()?.state}</h4>
                 </Col>
                 <Col>
-                    <h4>State:</h4>
-                </Col>
-                <Col>
-                    <h4>Zip:</h4>
+                    <h4>Zip: {getMoveIn()?.zip}</h4>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <h4>{getMoveIn()?.street}</h4>
-                </Col>
-                <Col>
-                    <h4>{getMoveIn()?.state}</h4>
-                </Col>
-                <Col>
-                    <h4>{getMoveIn()?.zip}</h4>
-                </Col>
-                <Col>
-                {checkDate() ? <h3>Move Day Temp:</h3> : <h3>Current Temp:</h3>}
-                {moveInWeather.main && <Weather weather={moveInWeather}/>}
+                    <h4>
+                        {checkDate() ? <>Move Day Temp: </> : <>Current Temp: </>}
+                        {moveInWeather.main && <Weather weather={moveInWeather}/>}
+                    </h4>
+                
                 </Col>
             </Row>
             <Row>
@@ -114,28 +110,24 @@ export const Locations = () => {
             </Row>
             <Row>
                 <Col>
-                    <h4>Street</h4>
+                    <h4>Street: {getMoveOut()?.street}</h4>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs="3">
+                    <h4>State: {getMoveOut()?.state}</h4>
                 </Col>
                 <Col>
-                    <h4>State</h4>
-                </Col>
-                <Col>
-                    <h4>Zip</h4>
+                    <h4>Zip: {getMoveOut()?.zip}</h4>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <h4>{getMoveOut()?.street}</h4>
-                </Col>
-                <Col>
-                    <h4>{getMoveOut()?.state}</h4>
-                </Col>
-                <Col>
-                    <h4>{getMoveOut()?.zip}</h4>
-                </Col>
-                <Col>
-                {checkDate() ? <h3>Move Day Temp:</h3> : <h3>Current Temp:</h3>}
-                {moveOutWeather.main && <Weather weather={moveOutWeather}/>}
+                    <h4>
+                        {checkDate() ? <>Move Day Temp: </> : <>Current Temp: </>}
+                        {moveOutWeather.main && <Weather weather={moveOutWeather}/>}
+                    </h4>
+                
                 </Col>
             </Row>     
         </Container>
