@@ -1,4 +1,5 @@
-import React, { useState, createContext } from "react"
+import React, { useState, createContext, useContext } from "react"
+import { JobsContext } from "../jobs/JobsProvider"
 
 //creat context for exporting functions
 export const LocationsContext = createContext()
@@ -8,6 +9,9 @@ export const LocationsProvider = props => {
 
     //set state for the locations array
     const [ locations, setLocations ] = useState([])
+
+    //get setSelectedJob
+    const { setSelectedJob, getJobById } = useContext(JobsContext)
 
     //get all of the locations
     const getLocations = () => {
@@ -34,6 +38,11 @@ export const LocationsProvider = props => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(location)
+        })
+        .then(res => res.json())
+        .then(parsedRes => {
+            getJobById(parsedRes.jobId)
+            .then(setSelectedJob)
         })
     }
 

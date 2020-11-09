@@ -4,13 +4,17 @@ import { JobsDayList } from "./JobsDayList"
 import { JobsContext } from "./JobsProvider"
 import { Link } from "react-router-dom"
 import { Container, Row, Col } from 'reactstrap'
+import { JobDetail } from "./JobDetail"
 
 //the main jobs calendar and jobs list component
 export const JobsCalendar = () => {
 
-    const { setSelectedJob } = useContext(JobsContext)
+    const { selectedJob, setSelectedJob } = useContext(JobsContext)
 
-    const [ date, setDate ] = useState(new Date((Math.round((new Date()).getTime() / 86400000) * 86400000) - (19 * 3600000)))
+    const [ date, setDate ] = useState(() => {
+        const date = new Date((Math.floor(Date.now() / 86400000) * 86400000) + (6 * 3600000))
+        return date
+    })
 
     const calendar = useRef(null)
 
@@ -31,14 +35,13 @@ export const JobsCalendar = () => {
                         ref={calendar}
                         
                         />
+                        <JobsDayList date={date}/>
+                        <Link to={`/jobs/form`}>Add Job</Link>
                     </Col>
-                </Row>
-                <Row>
-                    <JobsDayList date={date?.getTime()}/>
-                </Row>
-                <Row>
                     <Col>
-                        <Link to={`/jobs/form?date=${date?.getTime()}`}>Add Job</Link>
+                        {selectedJob.title && 
+                            <JobDetail />
+                        }
                     </Col>
                 </Row>
             </Container>

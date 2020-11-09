@@ -76,54 +76,6 @@ export const MessageList = ({update}) => {
         }   
     }
 
-    // const [ realTime, setRealTime] = useState(true)
-
-
-    // const getRealTime = async () => {
-    //     if(window.location.href === "http://localhost:3000/messages"){
-    //         return true
-    //     }
-    //     debugger;
-    //     return false
-    // }
-
-    // const [ update, setUpdate ] = useState("")
-
-    // const getUpdate = async () => {
-    //     let response = await fetch("http://localhost:8088/messages")
-
-    //     if (response.status == 502) {
-            
-    //         await getUpdate();
-
-    //     } else if (response.status != 200) {
-
-    //         await new Promise(resolve => setTimeout(resolve, 1000));
-    //         await getUpdate();
-
-    //     } else {
-    //         let message = await response.text();
-    //         return message
-    //       } 
-    // }
-
-    // const longPoll = async () => {
-
-    //     // if(!realTime){
-    //     //     return
-    //     // }
-
-    //     const realTime =  await getRealTime()
-    //     if(realTime){
-    //         const message = await getUpdate()
-    //         setUpdate(message)
-    //         longPoll()
-    //     }
-        
-    // }
-
-    // longPoll()
-
     useEffect(() => {
         getMessages()
         .then(parsedMessages => {

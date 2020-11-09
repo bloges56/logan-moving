@@ -18,14 +18,24 @@ export const ClientDetail = () => {
                         {selectedClient.firstName + " " + selectedClient.lastName}
                     </h3>
                 </Col>
-                <Col>
-                    <Link to={`/clients/edit/${selectedClient.id}`}>Edit</Link>
+                <Col xs="2">
+                    <Link to={`/clients/edit/${selectedClient.id}`}><Button color="warning">Edit</Button></Link>
                 </Col>
                 <Col>
-                    <Button onClick={event => {
+                    <Button color="danger" onClick={event => {
                         event.preventDefault()
                         removeClient(selectedClient.id)
                     }}>Remove Client</Button>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h4>Email: {selectedClient.email}</h4>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h4>Phone: {selectedClient.phone}</h4>
                 </Col>
             </Row>
         </Container>

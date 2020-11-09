@@ -52,10 +52,6 @@ export const ApplicationViews = () => {
 
     const longPoll = async () => {
 
-        // if(!realTime){
-        //     return
-        // }
-
         const realTime =  await getRealTime()
         if(realTime){
             const message = await getUpdate()

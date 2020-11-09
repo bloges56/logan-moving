@@ -48,6 +48,11 @@ export const JobsProvider = props => {
             },
             body: JSON.stringify(job)
         })
+        .then(res => res.json())
+        .then(parsedRes => {
+            getJobById(parsedRes.id)
+            .then(setSelectedJob)
+        })
     }
 
     //return the functions through JobsContext

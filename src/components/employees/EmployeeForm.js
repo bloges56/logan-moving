@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { EmployeesContext } from "./EmployeesProvider"
 import { useHistory, useParams } from "react-router-dom"
-import { Form, FormGroup, Input, Label, Button } from "reactstrap"
+import { Form, FormGroup, Input, Label, Button, Container, Row, Col } from "reactstrap"
 
 export const EmployeeForm = () => {
 
@@ -60,26 +60,39 @@ export const EmployeeForm = () => {
     }
 
     return (
-        <Form>
-            <FormGroup>
-                <Label for="employeeFirstName">First Name</Label>
-                <Input type="text" name="firstName" id="employeeFirstName" value={employee.firstName} onChange={handleInputControlChange} required></Input>
-            </FormGroup>
-            <FormGroup>
-                <Label for="employeeLastName">Last Name</Label>
-                <Input type="text" name="lastName" id="employeeLastName" value={employee.lastName} onChange={handleInputControlChange} required></Input>
-            </FormGroup>
-            <FormGroup>
-                <Label for="employeePhone">Phone Number</Label>
-                <Input type="number" name="phone" id="employeePhone" value={employee.phone} onChange={handleInputControlChange} required></Input>
-            </FormGroup>
-            <Button onClick={event => {
-                event.preventDefault()
-                constructEmployee()
-            }}>
-                {employeeId ? "Update" : "Hire"}
-            </Button>
-        </Form>
+        <Container>
+            <Form>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="employeeFirstName">First Name</Label>
+                            <Input type="text" name="firstName" id="employeeFirstName" value={employee.firstName} onChange={handleInputControlChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="employeeLastName">Last Name</Label>
+                            <Input type="text" name="lastName" id="employeeLastName" value={employee.lastName} onChange={handleInputControlChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row form>
+                    <Col xs="4">
+                        <FormGroup>
+                            <Label for="employeePhone">Phone Number</Label>
+                            <Input type="number" name="phone" id="employeePhone" value={employee.phone} onChange={handleInputControlChange} required></Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                
+                <Button onClick={event => {
+                    event.preventDefault()
+                    constructEmployee()
+                }}>
+                    {employeeId ? "Update" : "Hire"}
+                </Button>
+            </Form>
+        </Container>
     )
 
 }

@@ -7,21 +7,6 @@ import { Locations } from "../locations/Locations"
 
 export const JobDetail = () => {
 
-     //format the given date
-     function formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-    
-        if (month.length < 2) 
-            month = '0' + month;
-        if (day.length < 2) 
-            day = '0' + day;
-    
-        return [year, month, day].join('-');
-    }
-
     //get the needed functions from the conextes
     const { removeJob, selectedJob } = useContext(JobsContext)
     const { assigned, getEmployeeJobsByJobId } = useContext(EmployeeJobsContext)
@@ -40,38 +25,8 @@ export const JobDetail = () => {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{size:6, offset:1}}>
-                    <h3>Client: {selectedJob?.client.firstName + " " + selectedJob?.client.lastName}</h3>
-                </Col>
-                <Col xs={{size:5}}>
-                    <h4>{formatDate(selectedJob?.date)}</h4>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Locations />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h3>Assigned Employees</h3>
-                </Col>
-                <Col>
-                    <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}>Add Employees</Link>
-                </Col>
-            </Row>
-            {
-               assigned.map(employee => {
-                   return <Row key={employee.employee?.id}>
-                       <Col>
-                            <h4>{employee.employee.firstName + " " + employee.employee.lastName}</h4>
-                       </Col>
-                   </Row>
-               }) 
-            }
-            <Row>
-                <Col>
-                    <Link to={`/jobs/edit/${selectedJob.id}`}>Edit</Link>
+                <Col xs="2">
+                    <Link to={`/jobs/edit/${selectedJob.id}`}><Button color="warning">Edit</Button></Link>
                 </Col>
                 <Col>
                     <Button color="danger" onClick={() => {
@@ -81,6 +36,38 @@ export const JobDetail = () => {
                     </Button>
                 </Col>
             </Row>
+            <Row>
+                <Col xs={{size:6, offset:1}}>
+                    <h3>Client: {selectedJob?.client.firstName + " " + selectedJob?.client.lastName}</h3>
+                </Col>
+                <Col xs={{size:5}}>
+                    <h4>{new Date(selectedJob?.date).toLocaleDateString()}</h4>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Locations />
+                </Col>
+            </Row>
+            <Container>
+                <Row>
+                    <Col xs="9">
+                        <h3>Assigned Employees</h3>
+                    </Col>
+                    <Col xs="1">
+                        <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}><Button color="success">Add/Remove</Button></Link>
+                    </Col>
+                </Row>
+                {
+                assigned.map(employee => {
+                    return <Row key={employee.employee?.id}>
+                        <Col>
+                                <h4>{employee.employee.firstName + " " + employee.employee.lastName}</h4>
+                        </Col>
+                    </Row>
+                }) 
+                }
+            </Container>
         </Container>
     )
 }
