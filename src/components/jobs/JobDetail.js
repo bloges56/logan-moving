@@ -54,8 +54,8 @@ export const JobDetail = () => {
                     <Col xs="9">
                         <h3>Assigned Employees</h3>
                     </Col>
-                    <Col>
-                        <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}><Button color="success">Add</Button></Link>
+                    <Col xs="1">
+                        <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}><Button color="success">Add/Remove</Button></Link>
                     </Col>
                 </Row>
                 {
