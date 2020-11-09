@@ -21,6 +21,8 @@ export const ClientsProvider = props => {
             },
             body: JSON.stringify(client)
         })
+        .then(res => res.json())
+        .then(setSelectedClient)
     }
 
     const removeClient = id => {
