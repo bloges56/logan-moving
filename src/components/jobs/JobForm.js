@@ -93,7 +93,9 @@ export const JobForm = () => {
             if(jobId){
                 getJobById(jobId)
                 .then(jobRes => {
-                    setJob(jobRes)
+                    const jobDate = { ...jobRes}
+                    jobDate.date = jobDate.date - (6 * 3600000)
+                    setJob(jobDate)
                     return jobRes
                 })
                 .then(jobRes => {

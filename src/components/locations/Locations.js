@@ -89,7 +89,7 @@ export const Locations = () => {
                 </Col>
             </Row>
             <Row>
-                <Col xs="3">
+                <Col xs="4">
                     <h4>State: {getMoveIn()?.state}</h4>
                 </Col>
                 <Col>
@@ -114,7 +114,7 @@ export const Locations = () => {
                 </Col>
             </Row>
             <Row>
-                <Col xs="3">
+                <Col xs="4">
                     <h4>State: {getMoveOut()?.state}</h4>
                 </Col>
                 <Col>
