@@ -25,6 +25,18 @@ export const JobDetail = () => {
                 </Col>
             </Row>
             <Row>
+                <Col xs="2">
+                    <Link to={`/jobs/edit/${selectedJob.id}`}><Button color="warning">Edit</Button></Link>
+                </Col>
+                <Col>
+                    <Button color="danger" onClick={() => {
+                        removeJob(selectedJob.id)
+                    }}>
+                        Remove job
+                    </Button>
+                </Col>
+            </Row>
+            <Row>
                 <Col xs={{size:6, offset:1}}>
                     <h3>Client: {selectedJob?.client.firstName + " " + selectedJob?.client.lastName}</h3>
                 </Col>
@@ -37,35 +49,25 @@ export const JobDetail = () => {
                     <Locations />
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <h3>Assigned Employees</h3>
-                </Col>
-                <Col>
-                    <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}>Add Employees</Link>
-                </Col>
-            </Row>
-            {
-               assigned.map(employee => {
-                   return <Row key={employee.employee?.id}>
-                       <Col>
-                            <h4>{employee.employee.firstName + " " + employee.employee.lastName}</h4>
-                       </Col>
-                   </Row>
-               }) 
-            }
-            <Row>
-                <Col>
-                    <Link to={`/jobs/edit/${selectedJob.id}`}>Edit</Link>
-                </Col>
-                <Col>
-                    <Button color="danger" onClick={() => {
-                        removeJob(selectedJob.id)
-                    }}>
-                        Remove job
-                    </Button>
-                </Col>
-            </Row>
+            <Container>
+                <Row>
+                    <Col xs="9">
+                        <h3>Assigned Employees</h3>
+                    </Col>
+                    <Col>
+                        <Link to={`/jobs/addEmployeesToJob/${selectedJob.id}`}><Button color="success">Add</Button></Link>
+                    </Col>
+                </Row>
+                {
+                assigned.map(employee => {
+                    return <Row key={employee.employee?.id}>
+                        <Col>
+                                <h4>{employee.employee.firstName + " " + employee.employee.lastName}</h4>
+                        </Col>
+                    </Row>
+                }) 
+                }
+            </Container>
         </Container>
     )
 }
