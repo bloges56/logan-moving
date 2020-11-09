@@ -8,7 +8,7 @@ export const AddEmployeesToJob = () => {
     //get the jobId passed in the url
     const { jobId } = useParams()
     //get necessary functions from context
-    const { employeeJobs, getEmployeeJobs, getEmployeeJobsByJobId, addEmployeeJob, removeEmployeeJob } = useContext(EmployeeJobsContext)
+    const { employeeJobs, getEmployeeJobs, addEmployeeJob, removeEmployeeJob } = useContext(EmployeeJobsContext)
     const { employees, getEmployees } = useContext(EmployeesContext)
 
     

@@ -10,7 +10,10 @@ export const JobsCalendar = () => {
 
     const { setSelectedJob } = useContext(JobsContext)
 
-    const [ date, setDate ] = useState(new Date((Math.round((new Date()).getTime() / 86400000) * 86400000) - (19 * 3600000)))
+    const [ date, setDate ] = useState(() => {
+        const date = new Date((Math.floor(Date.now() / 86400000) * 86400000) + (6 * 3600000))
+        return date
+    })
 
     const calendar = useRef(null)
 
@@ -34,11 +37,11 @@ export const JobsCalendar = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <JobsDayList date={date?.getTime()}/>
+                    <JobsDayList date={date}/>
                 </Row>
                 <Row>
                     <Col>
-                        <Link to={`/jobs/form?date=${date?.getTime()}`}>Add Job</Link>
+                        <Link to={`/jobs/form`}>Add Job</Link>
                     </Col>
                 </Row>
             </Container>

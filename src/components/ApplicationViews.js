@@ -46,15 +46,12 @@ export const ApplicationViews = () => {
 
         } else {
             let message = await response.text();
+            debugger;
             return message
           } 
     }
 
     const longPoll = async () => {
-
-        // if(!realTime){
-        //     return
-        // }
 
         const realTime =  await getRealTime()
         if(realTime){

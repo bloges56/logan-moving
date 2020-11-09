@@ -7,21 +7,6 @@ import { Locations } from "../locations/Locations"
 
 export const JobDetail = () => {
 
-     //format the given date
-     function formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-    
-        if (month.length < 2) 
-            month = '0' + month;
-        if (day.length < 2) 
-            day = '0' + day;
-    
-        return [year, month, day].join('-');
-    }
-
     //get the needed functions from the conextes
     const { removeJob, selectedJob } = useContext(JobsContext)
     const { assigned, getEmployeeJobsByJobId } = useContext(EmployeeJobsContext)
@@ -44,7 +29,7 @@ export const JobDetail = () => {
                     <h3>Client: {selectedJob?.client.firstName + " " + selectedJob?.client.lastName}</h3>
                 </Col>
                 <Col xs={{size:5}}>
-                    <h4>{formatDate(selectedJob?.date)}</h4>
+                    <h4>{new Date(selectedJob?.date).toLocaleDateString()}</h4>
                 </Col>
             </Row>
             <Row>

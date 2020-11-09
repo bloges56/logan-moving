@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState } from "react"
 import { JobsContext } from "./JobsProvider"
 import { JobDetail } from "./JobDetail"
 import { Row, Col, Button } from "reactstrap"
-import { Link } from "react-router-dom"
+
  
 //component that lists out all the jobs of a given date
 export const JobsDayList = ({date}) => {
@@ -11,7 +11,7 @@ export const JobsDayList = ({date}) => {
 
     //get jobs on render and when the date is selected
     useEffect(() => {
-        getJobs(date)
+        getJobs(date.getTime())
     }, [date])
 
     

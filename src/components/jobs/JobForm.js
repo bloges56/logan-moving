@@ -23,6 +23,40 @@ export const JobForm = () => {
         date: ""
     })
 
+    //set state for moveIn and moveOut for adding new locations
+
+    const [ moveIn, setMoveIn ] = useState({
+        street: "",
+        state: "",
+        zip: "",
+        description: "",
+        moveIn: true
+    })
+
+    const [ moveOut, setMoveOut ] = useState({
+        street: "",
+        state: "",
+        zip: "",
+        description: "",
+        moveIn: false
+    })
+
+
+
+    //create input controls for movein and moveOut
+
+    const handleControlledInputChangeMoveIn = (event) => {
+        const newMoveIn = { ...moveIn }
+        newMoveIn[event.target.name] = event.target.value
+        setMoveIn(newMoveIn)
+    }
+
+    const handleControlledInputChangeMoveOut = (event) => {
+        const newMoveOut = { ...moveOut }
+        newMoveOut[event.target.name] = event.target.value
+        setMoveOut(newMoveOut)
+    }
+
     const getMoveIn = () => {
         if(job.id){
             return job.locations.find(location => {
@@ -41,20 +75,6 @@ export const JobForm = () => {
         return {}
     }
 
-    //set state for move in and move out locations
-    const [ moveIn, setMoveIn ] = useState({
-        street: "",
-        state: "",
-        zip: "",
-        description: "",
-    })
-    const [ moveOut, setMoveOut ] = useState({
-        street: "",
-        state: "",
-        zip: "",
-        description: "",
-    })
-
     //get the date passed in the url
     const date = new URLSearchParams(useLocation().search).get("date")
 
@@ -67,13 +87,7 @@ export const JobForm = () => {
     //update state of job as the job fields change
     const handleControlledInputChangeJob = event => {
         const newJob = { ...job }
-        if(event.target.name === "date"){
-            newJob.date = (Math.round((new Date(event.target.value)).getTime() / 86400000) * 86400000) - (19 * 3600000) + 86400000
-            debugger;
-        }
-        else{
-            newJob[event.target.name] = event.target.value
-        }
+        newJob[event.target.name] = event.target.value
         setJob(newJob)
     }
 
@@ -93,41 +107,25 @@ export const JobForm = () => {
             }
         })
     }, [])
-
-    //format the given date
-    function formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-    
-        if (month.length < 2) 
-            month = '0' + month;
-        if (day.length < 2) 
-            day = '0' + day;
-    
-        return [year, month, day].join('-');
-    }
     
     //add the job and locations to the database
     const constructJobAndLocationsObjects = () => {
         setIsLoading(true)
         if(jobId){
-            debugger;
             editJob({
                 id: parseInt(jobId),
                 title: job.title,
                 clientId: parseInt(job.clientId),
-                date: parseInt(job.date)
+                date: new Date(job.date).getTime() + (6 * 3600000)
             })
             .then(() => {
                 return editLocation({
                     id: getMoveIn().id,
                     jobId: parseInt(jobId),
-                    street: getMoveIn().street,
-                    state: getMoveIn().state,
-                    zip: parseInt(getMoveIn().zip),
-                    description: getMoveIn().description,
+                    street: moveIn.street,
+                    state: moveIn.state,
+                    zip: parseInt(moveIn.zip),
+                    description: moveIn.description,
                     moveIn: true
                 })
             })
@@ -135,10 +133,10 @@ export const JobForm = () => {
                 return editLocation({
                     id: getMoveOut().id,
                     jobId: parseInt(jobId),
-                    street: getMoveOut().street,
-                    state: getMoveOut().state,
-                    zip: parseInt(getMoveOut().zip),
-                    description: getMoveOut().description,
+                    street: moveOut.street,
+                    state: moveOut.state,
+                    zip: parseInt(moveOut.zip),
+                    description: moveOut.description,
                     moveIn: false
                 })
             })
@@ -148,16 +146,16 @@ export const JobForm = () => {
             addJob({
                 title: job.title,
                 clientId: parseInt(job.clientId),
-                date: parseInt(date)
+                date: new Date(job.date).getTime() + (6 * 3600000)
             })
             .then(res => res.json())
             .then(parsedRes => {
                 return addLocation({
                     jobId: parsedRes.id,
-                    street: getMoveIn().street,
-                    state: getMoveIn().state,
-                    zip: parseInt(getMoveIn().zip),
-                    description: getMoveIn().description,
+                    street: moveIn.street,
+                    state: moveIn.state,
+                    zip: parseInt(moveIn.zip),
+                    description: moveIn.description,
                     moveIn: true
                 })  
             })
@@ -165,10 +163,10 @@ export const JobForm = () => {
             .then(parsedMoveIn => {
                 addLocation({
                     jobId: parsedMoveIn.jobId,
-                    street: getMoveOut().street,
-                    state: getMoveOut().state,
-                    zip: parseInt(getMoveOut().zip),
-                    description: getMoveOut().description,
+                    street: moveOut.street,
+                    state: moveOut.state,
+                    zip: parseInt(moveOut.zip),
+                    description: moveOut.description,
                     moveIn: false
                 }) 
             })
@@ -187,7 +185,7 @@ export const JobForm = () => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-date">Date: </Label>
-                    <Input type="date" name="date" id="job-date" value={formatDate(parseInt(job?.date))} onChange={handleControlledInputChangeJob}/>
+                    <Input type="date" name="date" id="job-date" value={job?.date} onChange={handleControlledInputChangeJob}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-client">Select Client</Label>
@@ -202,23 +200,23 @@ export const JobForm = () => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-move-in-street">Move-In Location Street</Label>
-                    <Input type="text" name="street" id="job-move-in-street" onChange={handleControlledInputChangeJob} value={getMoveIn().street} required></Input>
+                    <Input type="text" name="street" id="job-move-in-street" onChange={handleControlledInputChangeMoveIn} value={moveIn?.street} required></Input>
                     <Label for="job-move-in-state">Move-In Location State</Label>
-                    <Input type="text" name="state" id="job-move-in-state" onChange={handleControlledInputChangeJob} value={getMoveIn().state} required></Input>
+                    <Input type="text" name="state" id="job-move-in-state" onChange={handleControlledInputChangeMoveIn} value={moveIn?.state} required></Input>
                     <Label for="job-move-in-zip">Move-In Location Zip</Label>
-                    <Input type="text" name="zip" id="job-move-in-zip" onChange={handleControlledInputChangeJob} value={getMoveIn().zip} required></Input>
+                    <Input type="text" name="zip" id="job-move-in-zip" onChange={handleControlledInputChangeMoveIn} value={moveIn?.zip} required></Input>
                     <Label for="job-move-in-desc">Move-In Location Description</Label>
-                    <Input type="textarea" name="description" id="job-move-in-desc" onChange={handleControlledInputChangeJob} value={getMoveIn().description} required></Input>
+                    <Input type="textarea" name="description" id="job-move-in-desc" onChange={handleControlledInputChangeMoveIn} value={moveIn?.description} required></Input>
                 </FormGroup>
                 <FormGroup>
                     <Label for="job-move-out-street">Move-Out Location Street</Label>
-                    <Input type="text" name="street" id="job-move-out-street" onChange={handleControlledInputChangeJob} value={getMoveOut().street} required></Input>
+                    <Input type="text" name="street" id="job-move-out-street" onChange={handleControlledInputChangeMoveOut} value={moveOut?.street} required></Input>
                     <Label for="job-move-out-state">Move-Out Location State</Label>
-                    <Input type="text" name="state" id="job-move-out-state" onChange={handleControlledInputChangeJob} value={getMoveOut().state} required></Input>
+                    <Input type="text" name="state" id="job-move-out-state" onChange={handleControlledInputChangeMoveOut} value={moveOut?.state} required></Input>
                     <Label for="job-move-out-zip">Move-Out Location Zip</Label>
-                    <Input type="text" name="zip" id="job-move-out-zip" onChange={handleControlledInputChangeJob} value={getMoveOut().zip} required></Input>
+                    <Input type="text" name="zip" id="job-move-out-zip" onChange={handleControlledInputChangeMoveOut} value={moveOut?.zip} required></Input>
                     <Label for="job-move-out-desc">Move-Out Location Description</Label>
-                    <Input type="textarea" name="description" id="job-move-out-desc" onChange={handleControlledInputChangeJob} value={getMoveOut().description} required></Input>
+                    <Input type="textarea" name="description" id="job-move-out-desc" onChange={handleControlledInputChangeMoveOut} value={moveOut?.description} required></Input>
                 </FormGroup>
                 <FormGroup>
                     <Button 
