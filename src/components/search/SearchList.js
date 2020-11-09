@@ -1,13 +1,20 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect } from "react"
 import { SearchContext } from "./SearchProvider"
-import { useLocation } from "react-router-dom"
-import { Container, Row, Col, ListGroup, ListGroupItem} from "reactstrap"
+import { useLocation, useHistory } from "react-router-dom"
+import { Container, Row, Col, ListGroup, ListGroupItem, Button} from "reactstrap"
+import { EmployeesContext } from "../employees/EmployeesProvider"
+import { JobsContext } from "../jobs/JobsProvider"
+import { ClientsContext } from "../clients/ClientsProvider"
 
 export const SearchList = () => {
 
     const { getAllSearch, jobs, employees, clients} = useContext(SearchContext)
 
-    
+    const { setSelectedEmployee } = useContext(EmployeesContext)
+
+    const { setSelectedJob } = useContext(JobsContext)
+
+    const { setSelectedClient } = useContext(ClientsContext)
 
     const term = new URLSearchParams(useLocation().search).get("term")
 
@@ -16,6 +23,8 @@ export const SearchList = () => {
             getAllSearch(term)
         }
     }, [term])
+
+    const history = useHistory()
 
     return (
         <Container>
@@ -26,11 +35,16 @@ export const SearchList = () => {
             </Row>
             {employees.length !== 0 && 
             <Row>
-                <Col>
+                <Col xs="4">
                     <h2>Employees</h2>
                     <ListGroup>
                         {employees.map(employee => {
-                            return <ListGroupItem key={employee.id}>{employee.firstName + " " + employee.lastName}</ListGroupItem>
+                            return <ListGroupItem key={employee.id}>
+                                <Button onClick={e => {
+                                    setSelectedEmployee(employee)
+                                    history.push("/employees")
+                                }}>{employee.firstName + " " + employee.lastName}</Button>
+                            </ListGroupItem>
                         })}
                     </ListGroup>
                 </Col>
@@ -38,11 +52,14 @@ export const SearchList = () => {
             }
             {jobs.length !== 0 && 
             <Row>
-                <Col>
+                <Col xs="4">
                     <h2>Jobs</h2>
                     <ListGroup>
                         {jobs.map(job => {
-                            return <ListGroupItem key={job.id}>{job.title}</ListGroupItem>
+                            return <ListGroupItem key={job.id}><Button onClick={e => {
+                                setSelectedJob(job)
+                                history.push("/jobs")
+                            }}>{job.title}</Button></ListGroupItem>
                         })}
                     </ListGroup>
                 </Col>
@@ -50,11 +67,14 @@ export const SearchList = () => {
             }
             {clients.length !== 0 && 
             <Row>
-                <Col>
+                <Col xs="4">
                     <h2>Clients</h2>
                     <ListGroup>
                         {clients.map(client => {
-                            return <ListGroupItem key={client.id}>{client.firstName + " " + client.lastName}</ListGroupItem>
+                            return <ListGroupItem key={client.id}><Button onClick={e => {
+                                setSelectedClient(client)
+                                history.push("/clients")
+                            }}>{client.firstName + " " + client.lastName}</Button></ListGroupItem>
                         })}
                     </ListGroup>
                 </Col>

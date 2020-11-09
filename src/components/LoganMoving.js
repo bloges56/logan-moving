@@ -14,11 +14,13 @@ export const LoganMoving = () =>{
                 if (sessionStorage.getItem("current_user")) {
                     return (
                         <>
-                            <SearchProvider>
-                                <NavBar />
-                            </SearchProvider>
-
-                            <ApplicationViews /> 
+                    
+                        <SearchProvider>
+                            <NavBar />
+                        </SearchProvider>
+                        
+                        <ApplicationViews />
+                            
                         </>
                     )
                 } else {
