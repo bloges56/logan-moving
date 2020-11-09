@@ -35,7 +35,7 @@ export const SearchList = () => {
             </Row>
             {employees.length !== 0 && 
             <Row>
-                <Col>
+                <Col xs="4">
                     <h2>Employees</h2>
                     <ListGroup>
                         {employees.map(employee => {
@@ -52,7 +52,7 @@ export const SearchList = () => {
             }
             {jobs.length !== 0 && 
             <Row>
-                <Col>
+                <Col xs="4">
                     <h2>Jobs</h2>
                     <ListGroup>
                         {jobs.map(job => {
@@ -67,7 +67,7 @@ export const SearchList = () => {
             }
             {clients.length !== 0 && 
             <Row>
-                <Col>
+                <Col xs="4">
                     <h2>Clients</h2>
                     <ListGroup>
                         {clients.map(client => {
