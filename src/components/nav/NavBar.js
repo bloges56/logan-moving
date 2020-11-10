@@ -32,11 +32,6 @@ export const NavBar = () => {
                         </InputGroup>
                     </Form>
                 </NavItem>
-                <LinkContainer to="/">
-                    <NavItem>
-                        <NavLink href="">Home</NavLink>
-                    </NavItem>
-                </LinkContainer>
                
                <LinkContainer to="/jobs">
                 <NavItem>
