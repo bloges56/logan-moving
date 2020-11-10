@@ -37,10 +37,10 @@ export const JobDetail = () => {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{size:6, offset:1}}>
+                <Col xs="9">
                     <h3>Client: {selectedJob?.client.firstName + " " + selectedJob?.client.lastName}</h3>
                 </Col>
-                <Col xs={{size:5}}>
+                <Col xs="3">
                     <h4>{new Date(selectedJob?.date).toLocaleDateString()}</h4>
                 </Col>
             </Row>
